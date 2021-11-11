@@ -1,13 +1,10 @@
 package de.hrw.verteiltesystemepraktikum.appuser;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-
+import javax.validation.constraints.*;
 /**
  * The data class represents a simple User which can be stored in a Database.
- *
+ * <p>
  * It is called appuser due to the keyword "data" is a reserved keyword in postgres.
  */
 @Entity(
@@ -37,6 +34,8 @@ public class AppUser {
             columnDefinition = "TEXT"
     )
     @NotBlank(message = "A firstname should be provided.")
+    @NotNull
+    @NotEmpty
     private String firstname;
 
     @Column(
@@ -44,17 +43,26 @@ public class AppUser {
             nullable = false,
             columnDefinition = "TEXT"
     )
+    @NotBlank(message = "A lastname should be provided.")
+    @NotNull
     private String lastname;
 
     @Email(message = "Email is not valid.")
     @Column(
             unique = true
     )
+    @NotEmpty
     private String email;
 
+    @NotEmpty
     private String password;
 
-    public AppUser(String firstname, String lastname, String email, String password) {
+    public AppUser(
+            String firstname,
+            String lastname,
+            String email,
+            String password
+    ) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;

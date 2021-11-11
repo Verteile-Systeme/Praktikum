@@ -22,4 +22,34 @@ public class AppUserServiceImpl implements  AppUserService{
         AppUser savedAppuser = appUserRepository.save(appUser);
         return savedAppuser;
     }
+
+    @Override
+    public void deleteUserById(Long id) throws UserNotFoundException {
+        if(!appUserRepository.existsById(id)) {
+            String errorString = "The specified id {" +  id +  "} does not exists.";
+            throw  new UserNotFoundException(errorString);
+        }
+        appUserRepository.deleteById(id);
+    }
+
+    @Override
+    public void deleteAllUsers() {
+        appUserRepository.deleteAll();
+    }
+
+    @Override
+    public AppUser updateUserById(AppUser newAppUser, Long id) throws UserNotFoundException {
+        if(!appUserRepository.existsById(id)) {
+            String errorString = "The specified id {" +  id +  "} does not exists.";
+            throw  new UserNotFoundException(errorString);
+        }
+        return appUserRepository.findById(id)
+                .map(appUser -> {
+                    appUser.setFirstname(newAppUser.getFirstname());
+                    appUser.setLastname(newAppUser.getLastname());
+                    return appUserRepository.save(appUser);
+                }).orElseGet(() -> {
+                    return appUserRepository.save(newAppUser);
+                });
+    }
 }
