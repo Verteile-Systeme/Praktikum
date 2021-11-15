@@ -1,5 +1,6 @@
 package de.hrw.verteiltesystemepraktikum.appuser;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Valid;
@@ -58,7 +59,7 @@ public class AppUserServiceImpl implements  AppUserService{
 
     @Override
     public List<AppUser> getAllUsers() {
-        return appUserRepository.findAll();
+        return appUserRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
     }
 
     @Override

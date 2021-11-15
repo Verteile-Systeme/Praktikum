@@ -1,6 +1,11 @@
 package de.hrw.verteiltesystemepraktikum;
 
 
+import com.github.javafaker.Faker;
+import de.hrw.verteiltesystemepraktikum.appuser.AppUser;
+import de.hrw.verteiltesystemepraktikum.appuser.AppUserRepository;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.MessageSource;
@@ -10,6 +15,9 @@ import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 @SpringBootApplication
 public class VerteiltesystemepraktikumApplication {
+
+	@Value(value = "${load.initial.data}")
+	boolean genrateTestdata;
 
 	@Bean
 	public MessageSource messageSource() {
@@ -30,19 +38,26 @@ public class VerteiltesystemepraktikumApplication {
 		SpringApplication.run(VerteiltesystemepraktikumApplication.class, args);
 	}
 
-//	@Bean
-//	CommandLineRunner commandLineRunner(AppUserRepository appUserRepository) {
-//		return args -> {
-//			appUserRepository.save(new AppUser(
-//					"Dimitrios",
-//					"Barkas",
-//					"dimitrios.barkas@codecentric.de",
-//					"1234"
-//			));
-//
-//			System.out.println(appUserRepository.existsByEmail("dimitrios.barkas@codecentric.de") == true ? "" +
-//					"Exists" : "Don`t exists.");
-//		};
-//	}
+	@Bean
+	CommandLineRunner commandLineRunner(AppUserRepository appUserRepository) {
+		return args -> {
+			if(genrateTestdata) {
+				for (int i = 0; i < 10; i++) {
+					Faker faker = new Faker();
+					String firstname = faker.name().firstName();
+					String lastname = faker.name().lastName();
+					String password = faker.crypto().md5();
+					String email = String.format("%s.%s@%s.com", firstname, lastname, lastname);
+					appUserRepository.save(new AppUser(
+							firstname,
+							lastname,
+							email,
+							password
+					));
+				}
+
+			}
+		};
+	}
 
 }
