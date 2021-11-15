@@ -1,7 +1,11 @@
 package de.hrw.verteiltesystemepraktikum.appuser;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AppUserServiceImpl implements  AppUserService{
@@ -17,10 +21,9 @@ public class AppUserServiceImpl implements  AppUserService{
     public AppUser saveUser(AppUser appUser) {
         if(appUserRepository.existsByEmail(appUser.getEmail())) {
             String errorString = "The provided email " +  appUser.getEmail() +  " already exists.";
-            throw  new MailAlreadyExistsException(errorString);
+            throw new MailAlreadyExistsException(errorString);
         }
-        AppUser savedAppuser = appUserRepository.save(appUser);
-        return savedAppuser;
+        return appUserRepository.save(appUser);
     }
 
     @Override
@@ -47,9 +50,21 @@ public class AppUserServiceImpl implements  AppUserService{
                 .map(appUser -> {
                     appUser.setFirstname(newAppUser.getFirstname());
                     appUser.setLastname(newAppUser.getLastname());
+                    appUser.setEmail(newAppUser.getEmail());
+                    appUser.setPassword(newAppUser.getPassword());
                     return appUserRepository.save(appUser);
                 }).orElseGet(() -> {
                     return appUserRepository.save(newAppUser);
                 });
+    }
+
+    @Override
+    public List<AppUser> getAllUsers() {
+        return appUserRepository.findAll();
+    }
+
+    @Override
+    public Optional<AppUser> findUserById(Long id) {
+        return appUserRepository.findById(id);
     }
 }

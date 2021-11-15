@@ -6,6 +6,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 @SpringBootApplication
 public class VerteiltesystemepraktikumApplication {
@@ -14,19 +15,19 @@ public class VerteiltesystemepraktikumApplication {
 		SpringApplication.run(VerteiltesystemepraktikumApplication.class, args);
 	}
 
-	@Bean
-	CommandLineRunner commandLineRunner(AppUserRepository appUserRepository) {
-		return args -> {
-			appUserRepository.save(new AppUser(
-					"Dimitrios",
-					"Barkas",
-					"dimitrios.barkas@codecentric.de",
-					"1234"
-			));
-
-			System.out.println(appUserRepository.existsByEmail("dimitrios.barkas@codecentric.de") == true ? "" +
-					"Exists" : "Don`t exists.");
-		};
-	}
+//	@Bean
+//	CommandLineRunner commandLineRunner(AppUserRepository appUserRepository) {
+//		return args -> {
+//			appUserRepository.save(new AppUser(
+//					"Dimitrios",
+//					"Barkas",
+//					"dimitrios.barkas@codecentric.de",
+//					"1234"
+//			));
+//
+//			System.out.println(appUserRepository.existsByEmail("dimitrios.barkas@codecentric.de") == true ? "" +
+//					"Exists" : "Don`t exists.");
+//		};
+//	}
 
 }

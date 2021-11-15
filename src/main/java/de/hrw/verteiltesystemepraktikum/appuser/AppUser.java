@@ -1,7 +1,12 @@
 package de.hrw.verteiltesystemepraktikum.appuser;
 
+import org.springframework.validation.annotation.Validated;
+
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 /**
  * The data class represents a simple User which can be stored in a Database.
  * <p>
@@ -13,47 +18,23 @@ import javax.validation.constraints.*;
 public class AppUser {
 
     @Id
-    @SequenceGenerator(
-            name = "appuser_sequence",
-            sequenceName = "appuser_sequence",
-            allocationSize = 1
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "appuser_sequence"
-    )
-    @Column(
-            name = "id",
-            updatable = false
-    )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(
-            name = "firstname",
-            nullable = false,
-            columnDefinition = "TEXT"
-    )
-    @NotBlank(message = "A firstname should be provided.")
-    @NotNull
+    @NotNull(message = "A firstname is required.")
     @NotEmpty
     private String firstname;
 
-    @Column(
-            name = "lastname",
-            nullable = false,
-            columnDefinition = "TEXT"
-    )
-    @NotBlank(message = "A lastname should be provided.")
     @NotNull
+    @NotEmpty
     private String lastname;
 
-    @Email(message = "Email is not valid.")
-    @Column(
-            unique = true
-    )
+    @NotNull
     @NotEmpty
+    @Email
     private String email;
 
+    @NotNull
     @NotEmpty
     private String password;
 
@@ -63,6 +44,20 @@ public class AppUser {
             String email,
             String password
     ) {
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.email = email;
+        this.password = password;
+    }
+
+    public AppUser(
+            long id,
+            String firstname,
+            String lastname,
+            String email,
+            String password
+    ) {
+        this.id = id;
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
