@@ -1,7 +1,5 @@
 package de.hrw.verteiltesystemepraktikum.appuser;
 
-import org.springframework.validation.annotation.Validated;
-
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -21,21 +19,21 @@ public class AppUser {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull(message = "A firstname is required.")
-    @NotEmpty
+    @NotNull(message = "{firstname.not.null}")
+    @NotEmpty(message = "{firstname.not.empty}")
     private String firstname;
 
-    @NotNull
-    @NotEmpty
+    @NotNull(message = "{lastname.not.null}")
+    @NotEmpty(message = "{lastname.not.empty}")
     private String lastname;
 
-    @NotNull
-    @NotEmpty
+    @NotNull(message = "{email.not.null}")
+    @NotEmpty(message = "{email.not.empty}")
     @Email
     private String email;
 
-    @NotNull
-    @NotEmpty
+    @NotNull(message = "{password.not.null}")
+    @NotEmpty(message = "{password.not.empty}")
     private String password;
 
     public AppUser(
@@ -50,19 +48,6 @@ public class AppUser {
         this.password = password;
     }
 
-    public AppUser(
-            long id,
-            String firstname,
-            String lastname,
-            String email,
-            String password
-    ) {
-        this.id = id;
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.email = email;
-        this.password = password;
-    }
 
     public AppUser() {
 

@@ -18,8 +18,11 @@ import java.util.Map;
 @RequestMapping(value = "/users", produces = "application/json")
 public class AppUserController {
 
-    @Autowired
-    AppUserService appUserService;
+    private final AppUserService appUserService;
+
+    public AppUserController(AppUserService appUserService) {
+        this.appUserService = appUserService;
+    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity deleteUserById(@PathVariable Long id) {
