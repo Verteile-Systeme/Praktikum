@@ -4,6 +4,11 @@ package de.hrw.verteiltesystemepraktikum;
 import com.github.javafaker.Faker;
 import de.hrw.verteiltesystemepraktikum.appuser.AppUser;
 import de.hrw.verteiltesystemepraktikum.appuser.AppUserRepository;
+import de.hrw.verteiltesystemepraktikum.product.Product;
+import de.hrw.verteiltesystemepraktikum.product.ProductRepository;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -14,7 +19,10 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 @SpringBootApplication
+@Slf4j
 public class VerteiltesystemepraktikumApplication {
+
+	private static Logger logger = LoggerFactory.getLogger(VerteiltesystemepraktikumApplication.class);
 
 	@Value(value = "${load.initial.data}")
 	String genrateTestdata;
@@ -40,7 +48,7 @@ public class VerteiltesystemepraktikumApplication {
 
 	// TODO: Die folgenden Zeilen müssen auskommentiert werden, wenn die Tests ausgeführt werden.
 	@Bean
-	CommandLineRunner commandLineRunner(AppUserRepository appUserRepository) {
+	CommandLineRunner commandLineRunner(AppUserRepository appUserRepository, ProductRepository productRepository) {
 		return args -> {
 			if(Boolean.parseBoolean(genrateTestdata)) {
 				for (int i = 0; i < 10; i++) {
@@ -58,6 +66,22 @@ public class VerteiltesystemepraktikumApplication {
 							password
 					));
 				}
+
+
+				for (int i = 0; i < 10; i++) {
+					Faker faker = new Faker();
+					String name = faker.commerce().productName();
+					String brand = faker.commerce().department();
+					int newPrice = Integer.parseInt(faker.commerce().price().replace(",", ""));
+					int oldPrice = Integer.parseInt(faker.commerce().price().replace(",", ""));
+					productRepository.save(new Product(
+							name,
+							brand,
+							newPrice,
+							oldPrice
+					));
+				}
+
 			}
 		};
 	}
