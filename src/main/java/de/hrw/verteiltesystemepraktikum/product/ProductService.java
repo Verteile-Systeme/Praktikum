@@ -10,12 +10,14 @@ public interface ProductService {
 
     void deleteProductById(Long id) throws ProductNotFoundException;
 
-    void deleteAllProducts();
+    Long deleteAllProducts();
 
     Product updateProductById(@Valid Product product, Long id) throws ProductNotFoundException;
 
     List<Product> getAllProducts();
 
     Optional<Product> findProductById(Long id);
+
+    List<Product> updateAllProducts();
 
 }

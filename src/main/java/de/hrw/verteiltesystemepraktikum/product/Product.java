@@ -23,11 +23,9 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @NotNull(message = "{name.product.not.null}")
     @NotEmpty(message = "{name.product.not.empty}")
     private String name;
 
-    @NotNull(message = "{brand.product.not.null}")
     @NotEmpty(message = "{brand.product.not.empty}")
     private String brand;
 

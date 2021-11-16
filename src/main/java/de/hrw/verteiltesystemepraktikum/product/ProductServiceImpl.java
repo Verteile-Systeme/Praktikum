@@ -31,8 +31,10 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public void deleteAllProducts() {
+    public Long deleteAllProducts() {
+        Long entities = productRepository.count();
         productRepository.deleteAll();
+        return entities;
     }
 
     @Override
@@ -63,5 +65,11 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public Optional<Product> findProductById(Long id) {
         return productRepository.findById(id);
+    }
+
+    @Override
+    public List<Product> updateAllProducts() {
+        //TODO: Alle Produkte updaten
+        return null;
     }
 }

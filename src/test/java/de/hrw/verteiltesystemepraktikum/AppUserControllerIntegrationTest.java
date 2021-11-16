@@ -3,6 +3,7 @@ package de.hrw.verteiltesystemepraktikum;
 import com.github.javafaker.Faker;
 import de.hrw.verteiltesystemepraktikum.appuser.AppUser;
 import de.hrw.verteiltesystemepraktikum.appuser.AppUserController;
+import de.hrw.verteiltesystemepraktikum.appuser.AppUserRepository;
 import de.hrw.verteiltesystemepraktikum.appuser.AppUserService;
 import org.hamcrest.core.Is;
 import org.junit.Test;

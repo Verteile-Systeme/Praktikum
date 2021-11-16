@@ -1,5 +1,6 @@
 package de.hrw.verteiltesystemepraktikum.appuser;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +13,7 @@ public class AppUserServiceImpl implements AppUserService {
 
     private final AppUserRepository appUserRepository;
 
+    @Autowired
     public AppUserServiceImpl(AppUserRepository appUserRepository) {
         this.appUserRepository = appUserRepository;
     }
@@ -35,8 +37,10 @@ public class AppUserServiceImpl implements AppUserService {
     }
 
     @Override
-    public void deleteAllUsers() {
+    public Long deleteAllUsers() {
+        Long entites = appUserRepository.count();
         appUserRepository.deleteAll();
+        return entites;
     }
 
     @Override
@@ -66,5 +70,11 @@ public class AppUserServiceImpl implements AppUserService {
     @Override
     public Optional<AppUser> findUserById(Long id) {
         return appUserRepository.findById(id);
+    }
+
+    @Override
+    public List<AppUser> updateAllUsers() {
+        //TODO: Alle Benutzer updaten
+        return null;
     }
 }

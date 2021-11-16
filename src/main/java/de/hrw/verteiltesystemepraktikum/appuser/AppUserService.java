@@ -9,7 +9,7 @@ public interface AppUserService {
 
     void deleteUserById(Long id) throws UserNotFoundException;
 
-    void deleteAllUsers();
+    Long deleteAllUsers();
 
     AppUser updateUserById(AppUser newAppUser, Long id) throws UserNotFoundException;
 
@@ -17,6 +17,6 @@ public interface AppUserService {
 
     Optional<AppUser> findUserById(Long id);
 
-
+    List<AppUser> updateAllUsers();
 
 }

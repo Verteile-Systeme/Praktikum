@@ -4,7 +4,6 @@ package de.hrw.verteiltesystemepraktikum;
 import com.github.javafaker.Faker;
 import de.hrw.verteiltesystemepraktikum.appuser.AppUser;
 import de.hrw.verteiltesystemepraktikum.appuser.AppUserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -39,6 +38,7 @@ public class VerteiltesystemepraktikumApplication {
 		SpringApplication.run(VerteiltesystemepraktikumApplication.class, args);
 	}
 
+	// TODO: Die folgenden Zeilen müssen auskommentiert werden, wenn die Tests ausgeführt werden.
 	@Bean
 	CommandLineRunner commandLineRunner(AppUserRepository appUserRepository) {
 		return args -> {
@@ -58,7 +58,6 @@ public class VerteiltesystemepraktikumApplication {
 							password
 					));
 				}
-
 			}
 		};
 	}

@@ -1,5 +1,6 @@
 package de.hrw.verteiltesystemepraktikum.appuser;
 
+import com.github.javafaker.App;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,7 @@ public class AppUserController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteUserById(@PathVariable Long id) {
+    public ResponseEntity<?> deleteUserById(@PathVariable Long id) {
         try {
             appUserService.deleteUserById(id);
             return new ResponseEntity(HttpStatus.OK);
@@ -33,43 +34,36 @@ public class AppUserController {
     }
 
     @DeleteMapping
-    public ResponseEntity deleteAllUsers() {
-        appUserService.deleteAllUsers();
-        return new ResponseEntity(HttpStatus.OK);
+    public ResponseEntity<?> deleteAllUsers() {
+        long entities = appUserService.deleteAllUsers();
+        String response = String.format("%d Entites deleted.", entities);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity updateUserById(@PathVariable Long id,
+    public ResponseEntity<?> updateUserById(@PathVariable Long id,
                                          @Valid @RequestBody AppUser appUser
     ) {
         try {
-            return new ResponseEntity(appUserService.updateUserById(appUser, id), HttpStatus.OK);
+            return new ResponseEntity<>(appUserService.updateUserById(appUser, id), HttpStatus.OK);
         } catch (UserNotFoundException ex) {
-            return new ResponseEntity(ex.getMessage(), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 
+
+
     @PostMapping
     @ResponseBody
-    public ResponseEntity addUser(@Valid @RequestBody AppUser appUser) {
+    public ResponseEntity<?> addUser(@Valid @RequestBody AppUser appUser) {
         try {
             return ResponseEntity
                     .status(HttpStatus.CREATED)
                     .contentType(MediaType.APPLICATION_JSON)
                     .body(appUserService.saveUser(appUser));
-        } catch (MailAlreadyExistsException | ConstraintViolationException ex) {
-            if (ex.getClass().equals(MailAlreadyExistsException.class)) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                        .body(ex.getMessage());
-            } else {
-                Map<String, String> constraintViolations = new HashMap<>();
-                assert ex instanceof ConstraintViolationException;
-                 ((ConstraintViolationException) ex).getConstraintViolations().forEach((constraintViolation -> {
-                    constraintViolations.put(constraintViolation.getPropertyPath().toString(),constraintViolation.getMessage());
-                }));
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(constraintViolations);
-            }
-
+        } catch (MailAlreadyExistsException ex) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(ex.getMessage());
         }
     }
 
@@ -85,15 +79,5 @@ public class AppUserController {
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Map<String, String> handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
-        Map<String, String> errors = new HashMap<>();
-
-        ex.getBindingResult().getFieldErrors().forEach(error ->
-                errors.put(error.getField(), error.getDefaultMessage()));
-
-        return errors;
-    }
 
 }
