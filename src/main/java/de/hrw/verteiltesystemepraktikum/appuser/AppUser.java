@@ -32,6 +32,10 @@ public class AppUser {
     @Email
     private String email;
 
+    @NotNull(message = "{address.not.null}")
+    @NotEmpty(message = "{address.not.empty}")
+    private String address;
+
     @NotNull(message = "{password.not.null}")
     @NotEmpty(message = "{password.not.empty}")
     private String password;
@@ -40,12 +44,22 @@ public class AppUser {
             String firstname,
             String lastname,
             String email,
+            String address,
             String password
     ) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
+        this.address = address;
         this.password = password;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
 

@@ -47,11 +47,13 @@ public class VerteiltesystemepraktikumApplication {
 					String firstname = faker.name().firstName();
 					String lastname = faker.name().lastName();
 					String password = faker.crypto().md5();
+					String address = faker.address().fullAddress();
 					String email = String.format("%s.%s@%s.com", firstname, lastname, lastname);
 					appUserRepository.save(new AppUser(
 							firstname,
 							lastname,
 							email,
+							address,
 							password
 					));
 				}

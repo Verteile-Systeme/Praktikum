@@ -50,6 +50,7 @@ public class AppUserServiceImpl implements  AppUserService{
                     appUser.setFirstname(newAppUser.getFirstname());
                     appUser.setLastname(newAppUser.getLastname());
                     appUser.setEmail(newAppUser.getEmail());
+                    appUser.setAddress(newAppUser.getAddress());
                     appUser.setPassword(newAppUser.getPassword());
                     return appUserRepository.save(appUser);
                 }).orElseGet(() -> {

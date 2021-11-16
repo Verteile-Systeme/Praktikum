@@ -16,7 +16,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
@@ -25,7 +24,6 @@ import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
@@ -50,6 +48,7 @@ public class AppUserControllerIntegrationTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.firstname", Is.is("Empty firstname is not allowed.")))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.lastname", Is.is("Empty lastname is not allowed.")))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.email", Is.is("Empty email is not allowed.")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.address", Is.is("Empty address is not allowed.")))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.password", Is.is("Empty password is not allowed.")))
                 .andExpect(MockMvcResultMatchers.content()
                         .contentType(MediaType.APPLICATION_JSON));
@@ -65,6 +64,7 @@ public class AppUserControllerIntegrationTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.firstname", Is.is("A firstname is required.")))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.lastname", Is.is("A lastname is required.")))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.email", Is.is("An email is required.")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.address", Is.is("An address is required.")))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.password", Is.is("A password is required.")))
                 .andExpect(MockMvcResultMatchers.content()
                         .contentType(MediaType.APPLICATION_JSON));
@@ -77,9 +77,10 @@ public class AppUserControllerIntegrationTest {
         String firstname = faker.name().firstName();
         String lastname = faker.name().lastName();
         String password = faker.crypto().md5();
+        String address = faker.address().fullAddress();
         String email = String.format("%s.%s@%s.com", firstname, lastname, lastname);
         String user = String.format("{\"firstname\": \"%s\", \"lastname\": \"%s\", \"email\": \"%s\", \"password\": \"%s\" }", firstname, lastname, email, password);
-        AppUser testUser = new AppUser(firstname, lastname, email, password);
+        AppUser testUser = new AppUser(firstname, lastname, email, address, password);
         when(appUserService.saveUser(any(AppUser.class))).thenReturn(testUser);
         this.mockMvc.perform(post("/users").content(user).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
