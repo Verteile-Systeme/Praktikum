@@ -1,5 +1,9 @@
 package de.hrw.verteiltesystemepraktikum.appuser;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -13,30 +17,28 @@ import javax.validation.constraints.NotNull;
 @Entity(
         name = "appuser"
 )
+@NoArgsConstructor
+@Getter
+@Setter
 public class AppUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull(message = "{firstname.not.null}")
     @NotEmpty(message = "{firstname.not.empty}")
     private String firstname;
 
-    @NotNull(message = "{lastname.not.null}")
     @NotEmpty(message = "{lastname.not.empty}")
     private String lastname;
 
-    @NotNull(message = "{email.not.null}")
     @NotEmpty(message = "{email.not.empty}")
     @Email
     private String email;
 
-    @NotNull(message = "{address.not.null}")
     @NotEmpty(message = "{address.not.empty}")
     private String address;
 
-    @NotNull(message = "{password.not.null}")
     @NotEmpty(message = "{password.not.empty}")
     private String password;
 
@@ -54,58 +56,6 @@ public class AppUser {
         this.password = password;
     }
 
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-
-    public AppUser() {
-
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getFirstname() {
-        return firstname;
-    }
-
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
-    }
-
-    public String getLastname() {
-        return lastname;
-    }
-
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     @Override
     public String toString() {

@@ -4,6 +4,7 @@ package de.hrw.verteiltesystemepraktikum;
 import com.github.javafaker.Faker;
 import de.hrw.verteiltesystemepraktikum.appuser.AppUser;
 import de.hrw.verteiltesystemepraktikum.appuser.AppUserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -17,7 +18,7 @@ import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 public class VerteiltesystemepraktikumApplication {
 
 	@Value(value = "${load.initial.data}")
-	boolean genrateTestdata;
+	String genrateTestdata;
 
 	@Bean
 	public MessageSource messageSource() {
@@ -41,7 +42,7 @@ public class VerteiltesystemepraktikumApplication {
 	@Bean
 	CommandLineRunner commandLineRunner(AppUserRepository appUserRepository) {
 		return args -> {
-			if(genrateTestdata) {
+			if(Boolean.parseBoolean(genrateTestdata)) {
 				for (int i = 0; i < 10; i++) {
 					Faker faker = new Faker();
 					String firstname = faker.name().firstName();

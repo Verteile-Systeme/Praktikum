@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class AppUserServiceImpl implements  AppUserService{
+public class AppUserServiceImpl implements AppUserService {
 
     private final AppUserRepository appUserRepository;
 
@@ -18,8 +18,8 @@ public class AppUserServiceImpl implements  AppUserService{
 
     @Override
     public AppUser saveUser(@Valid AppUser appUser) {
-        if(appUserRepository.existsByEmail(appUser.getEmail())) {
-            String errorString = "The provided email " +  appUser.getEmail() +  " already exists.";
+        if (appUserRepository.existsByEmail(appUser.getEmail())) {
+            String errorString = "The provided email " + appUser.getEmail() + " already exists.";
             throw new MailAlreadyExistsException(errorString);
         }
         return appUserRepository.save(appUser);
@@ -27,9 +27,9 @@ public class AppUserServiceImpl implements  AppUserService{
 
     @Override
     public void deleteUserById(Long id) throws UserNotFoundException {
-        if(!appUserRepository.existsById(id)) {
-            String errorString = "The specified id {" +  id +  "} does not exists.";
-            throw  new UserNotFoundException(errorString);
+        if (!appUserRepository.existsById(id)) {
+            String errorString = "The specified id <" + id + "> does not exists.";
+            throw new UserNotFoundException(errorString);
         }
         appUserRepository.deleteById(id);
     }
@@ -41,9 +41,9 @@ public class AppUserServiceImpl implements  AppUserService{
 
     @Override
     public AppUser updateUserById(AppUser newAppUser, Long id) throws UserNotFoundException {
-        if(!appUserRepository.existsById(id)) {
-            String errorString = "The specified id {" +  id +  "} does not exists.";
-            throw  new UserNotFoundException(errorString);
+        if (!appUserRepository.existsById(id)) {
+            String errorString = "The specified id <" + id + "> does not exists.";
+            throw new UserNotFoundException(errorString);
         }
         return appUserRepository.findById(id)
                 .map(appUser -> {

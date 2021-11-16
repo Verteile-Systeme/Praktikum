@@ -1,10 +1,8 @@
 package de.hrw.verteiltesystemepraktikum.appuser;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
@@ -61,13 +59,15 @@ public class AppUserController {
                     .body(appUserService.saveUser(appUser));
         } catch (MailAlreadyExistsException | ConstraintViolationException ex) {
             if (ex.getClass().equals(MailAlreadyExistsException.class)) {
-                return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body(ex.getMessage());
             } else {
                 Map<String, String> constraintViolations = new HashMap<>();
-                ((ConstraintViolationException) ex).getConstraintViolations().forEach((constraintViolation -> {
+                assert ex instanceof ConstraintViolationException;
+                 ((ConstraintViolationException) ex).getConstraintViolations().forEach((constraintViolation -> {
                     constraintViolations.put(constraintViolation.getPropertyPath().toString(),constraintViolation.getMessage());
                 }));
-                return new ResponseEntity(constraintViolations, HttpStatus.BAD_REQUEST);
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(constraintViolations);
             }
 
         }
