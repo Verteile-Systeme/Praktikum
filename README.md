@@ -10,7 +10,7 @@ Folgende Studierende arbeiten an dem Projekt:
 * [Dimitrios Barkas](https://github.com/dimibarkas)
 * [Tim Cichon](https://github.com/dmticich)
 
-# Entwicklungsumgebung
+## Entwicklungsumgebung
 
 Für die Ausführung wird eine lokale Postgres-Instanz benötigt.
 Diese kann z.B. mithilfe des folgenden Befehls gestartet werden.
