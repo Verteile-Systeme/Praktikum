@@ -1,17 +1,12 @@
 package de.hrw.verteiltesystemepraktikum.appuser;
 
-import com.github.javafaker.App;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/users", produces = "application/json")
@@ -51,6 +46,17 @@ public class AppUserController {
         }
     }
 
+    @PutMapping
+    public ResponseEntity<?> updateAllUsers(@Valid @RequestBody  AppUser updatedAppUser) {
+        try {
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(appUserService.updateAllUsers(updatedAppUser));
+        } catch (UserNotFoundException ex) {
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
 
 
     @PostMapping

@@ -4,11 +4,12 @@ import de.hrw.verteiltesystemepraktikum.appuser.UserNotFoundException;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ProductServiceImpl implements ProductService{
+public class ProductServiceImpl implements ProductService {
 
     public final ProductRepository productRepository;
 
@@ -23,8 +24,8 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public void deleteProductById(Long id) throws ProductNotFoundException {
-        if(!productRepository.existsById(id)) {
-            String errorString = "The specified id <" +  id +  "> does not exists.";
+        if (!productRepository.existsById(id)) {
+            String errorString = "The specified id <" + id + "> does not exists.";
             throw new ProductNotFoundException(errorString);
         }
         productRepository.deleteById(id);
@@ -38,20 +39,20 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public Product updateProductById(Product newProduct, Long id) throws ProductNotFoundException {
-        if(productRepository.existsById(id)) {
+    public Product updateProductById(Product updatedProduct, Long id) throws ProductNotFoundException {
+        if (!productRepository.existsById(id)) {
             String errorString = "The specified id <" + id + "> does not exists.";
-            throw new UserNotFoundException(errorString);
+            throw new ProductNotFoundException(errorString);
         }
         return productRepository.findById(id)
                 .map(product -> {
-                    product.setName(newProduct.getName());
-                    product.setBrand(newProduct.getBrand());
-                    product.setOldPrice(newProduct.getOldPrice());
-                    product.setNewPrice(newProduct.getNewPrice());
+                    product.setName(updatedProduct.getName());
+                    product.setBrand(updatedProduct.getBrand());
+                    product.setOldPrice(updatedProduct.getOldPrice());
+                    product.setNewPrice(updatedProduct.getNewPrice());
                     return productRepository.save(product);
                 }).orElseGet(() -> {
-                    return productRepository.save(newProduct);
+                    return productRepository.save(updatedProduct);
                 });
     }
 
@@ -68,8 +69,17 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public List<Product> updateAllProducts() {
-        //TODO: Alle Produkte updaten
+    public List<Product> updateAllProducts(Product updatedProduct) {
+        List<Product> updatedProducts = new ArrayList<>();
+        List<Product> allProducts = this.getAllProducts();
+
+        if (!allProducts.isEmpty()) {
+            for (Product temp :
+                    allProducts) {
+                updatedProducts.add(updateProductById(updatedProduct, temp.getId()));
+            }
+            return updatedProducts;
+        }
         return null;
     }
 }

@@ -6,6 +6,8 @@ import de.hrw.verteiltesystemepraktikum.appuser.AppUser;
 import de.hrw.verteiltesystemepraktikum.appuser.AppUserRepository;
 import de.hrw.verteiltesystemepraktikum.product.Product;
 import de.hrw.verteiltesystemepraktikum.product.ProductRepository;
+import de.hrw.verteiltesystemepraktikum.review.Review;
+import de.hrw.verteiltesystemepraktikum.review.ReviewService;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,7 +50,7 @@ public class VerteiltesystemepraktikumApplication {
 
 	// TODO: Die folgenden Zeilen müssen auskommentiert werden, wenn die Tests ausgeführt werden.
 	@Bean
-	CommandLineRunner commandLineRunner(AppUserRepository appUserRepository, ProductRepository productRepository) {
+	CommandLineRunner commandLineRunner(AppUserRepository appUserRepository, ProductRepository productRepository, ReviewService reviewService) {
 		return args -> {
 			if(Boolean.parseBoolean(genrateTestdata)) {
 				for (int i = 0; i < 10; i++) {
@@ -67,7 +69,6 @@ public class VerteiltesystemepraktikumApplication {
 					));
 				}
 
-
 				for (int i = 0; i < 10; i++) {
 					Faker faker = new Faker();
 					String name = faker.commerce().productName();
@@ -81,7 +82,6 @@ public class VerteiltesystemepraktikumApplication {
 							oldPrice
 					));
 				}
-
 			}
 		};
 	}

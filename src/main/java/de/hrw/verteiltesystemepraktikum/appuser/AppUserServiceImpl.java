@@ -5,6 +5,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,21 +45,21 @@ public class AppUserServiceImpl implements AppUserService {
     }
 
     @Override
-    public AppUser updateUserById(AppUser newAppUser, Long id) throws UserNotFoundException {
+    public AppUser updateUserById(AppUser updatedAppUser, Long id) throws UserNotFoundException {
         if (!appUserRepository.existsById(id)) {
             String errorString = "The specified id <" + id + "> does not exists.";
             throw new UserNotFoundException(errorString);
         }
         return appUserRepository.findById(id)
                 .map(appUser -> {
-                    appUser.setFirstname(newAppUser.getFirstname());
-                    appUser.setLastname(newAppUser.getLastname());
-                    appUser.setEmail(newAppUser.getEmail());
-                    appUser.setAddress(newAppUser.getAddress());
-                    appUser.setPassword(newAppUser.getPassword());
+                    appUser.setFirstname(updatedAppUser.getFirstname());
+                    appUser.setLastname(updatedAppUser.getLastname());
+                    appUser.setEmail(updatedAppUser.getEmail());
+                    appUser.setAddress(updatedAppUser.getAddress());
+                    appUser.setPassword(updatedAppUser.getPassword());
                     return appUserRepository.save(appUser);
                 }).orElseGet(() -> {
-                    return appUserRepository.save(newAppUser);
+                    return appUserRepository.save(updatedAppUser);
                 });
     }
 
@@ -73,8 +74,18 @@ public class AppUserServiceImpl implements AppUserService {
     }
 
     @Override
-    public List<AppUser> updateAllUsers() {
-        //TODO: Alle Benutzer updaten
+    public List<AppUser> updateAllUsers(AppUser updatedAppUser) {
+        List<AppUser> updatedUsers = new ArrayList<>();
+        List<AppUser> allUsers = this.getAllUsers();
+        if (!allUsers.isEmpty()) {
+            for (AppUser temp :
+                    allUsers) {
+                updatedUsers.add(updateUserById(updatedAppUser, temp.getId()));
+            }
+            return updatedUsers;
+        }
         return null;
     }
+
+
 }

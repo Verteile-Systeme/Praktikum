@@ -11,12 +11,12 @@ public interface AppUserService {
 
     Long deleteAllUsers();
 
-    AppUser updateUserById(AppUser newAppUser, Long id) throws UserNotFoundException;
+    AppUser updateUserById(AppUser updatedAppUser, Long id) throws UserNotFoundException;
 
     List<AppUser> getAllUsers();
 
     Optional<AppUser> findUserById(Long id);
 
-    List<AppUser> updateAllUsers();
+    List<AppUser> updateAllUsers(AppUser updatedAppUser);
 
 }

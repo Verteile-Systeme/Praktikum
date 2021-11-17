@@ -70,4 +70,16 @@ public class ProductController {
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
+
+    @PutMapping
+    public ResponseEntity<?> updateAllProducts(@Valid @RequestBody Product updatedProduct) {
+        try {
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(productService.updateAllProducts(updatedProduct));
+        } catch (ProductNotFoundException ex) {
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
 }
