@@ -1,5 +1,7 @@
 package de.hrw.verteiltesystemepraktikum.product;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import de.hrw.verteiltesystemepraktikum.review.Review;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,6 +10,8 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @NoArgsConstructor
@@ -32,6 +36,10 @@ public class Product {
 
     private Integer oldPrice;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "product")
+    private Set<Review> reviews = new HashSet<>();
+
     public Product(String name, String brand, Integer newPrice, Integer oldPrice) {
         this.name = name;
         this.brand = brand;
@@ -49,4 +57,5 @@ public class Product {
                 ", oldPrice=" + oldPrice +
                 '}';
     }
+
 }

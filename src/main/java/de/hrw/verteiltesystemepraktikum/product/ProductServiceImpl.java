@@ -1,20 +1,22 @@
 package de.hrw.verteiltesystemepraktikum.product;
 
-import de.hrw.verteiltesystemepraktikum.appuser.UserNotFoundException;
+import de.hrw.verteiltesystemepraktikum.review.Review;
+import de.hrw.verteiltesystemepraktikum.review.ReviewRepository;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class ProductServiceImpl implements ProductService {
 
     public final ProductRepository productRepository;
 
-    public ProductServiceImpl(ProductRepository productRepository) {
+    public final ReviewRepository reviewRepository;
+
+    public ProductServiceImpl(ProductRepository productRepository, ReviewRepository reviewRepository) {
         this.productRepository = productRepository;
+        this.reviewRepository = reviewRepository;
     }
 
     @Override
@@ -81,5 +83,26 @@ public class ProductServiceImpl implements ProductService {
             return updatedProducts;
         }
         return null;
+    }
+
+    @Override
+    public Review addReviewToProduct(Long productId, Review review) throws ProductNotFoundException {
+        Optional<Product> optionalProduct = this.findProductById(productId);
+        if(optionalProduct.isPresent()){
+            Product product = optionalProduct.get();
+            review.assignProduct(product);
+            return reviewRepository.save(review);
+        }
+        return null;
+    }
+
+    @Override
+    public Set<Review> showReviewsToProduct(Long productId) throws ProductNotFoundException {
+        Optional<Product> optionalProduct = this.findProductById(productId);
+        if(optionalProduct.isPresent()) {
+            return optionalProduct.get().getReviews();
+        }
+        String errorString = "The specified id <" + productId + "> does not exists.";
+        throw new ProductNotFoundException(errorString);
     }
 }

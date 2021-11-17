@@ -1,7 +1,10 @@
 package de.hrw.verteiltesystemepraktikum.product;
 
+import de.hrw.verteiltesystemepraktikum.review.Review;
+
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface ProductService {
 
@@ -19,4 +22,7 @@ public interface ProductService {
 
     List<Product> updateAllProducts(Product updatedProduct);
 
+    Review addReviewToProduct(Long productId, Review review) throws ProductNotFoundException;
+
+    Set<Review> showReviewsToProduct(Long productId) throws ProductNotFoundException;
 }

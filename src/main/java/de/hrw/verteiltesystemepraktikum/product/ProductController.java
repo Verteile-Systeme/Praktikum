@@ -1,5 +1,6 @@
 package de.hrw.verteiltesystemepraktikum.product;
 
+import de.hrw.verteiltesystemepraktikum.review.Review;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +14,6 @@ import java.util.List;
 public class ProductController {
 
     private final ProductService productService;
-
 
     public ProductController(ProductService productService) {
         this.productService = productService;
@@ -48,7 +48,7 @@ public class ProductController {
     public ResponseEntity<?> deleteAllProducts() {
         long entities = productService.deleteAllProducts();
         String response = String.format("%d Entites deleted.", entities);
-        return new ResponseEntity<>(response,HttpStatus.OK);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
@@ -81,5 +81,32 @@ public class ProductController {
         } catch (ProductNotFoundException ex) {
             return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
         }
+    }
+
+    @PostMapping("/{id}/ratings")
+    public ResponseEntity<?> addReviewToProduct(
+            @RequestBody Review review,
+            @PathVariable Long id) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(productService.addReviewToProduct(id, review));
+    }
+
+    @GetMapping("/{id}/ratings")
+    public ResponseEntity<?> showReviewsToProduct(
+            @PathVariable Long id
+    ) {
+        try {
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(productService.showReviewsToProduct(id));
+        } catch (ProductNotFoundException ex) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(ex.getMessage());
+        }
+
     }
 }

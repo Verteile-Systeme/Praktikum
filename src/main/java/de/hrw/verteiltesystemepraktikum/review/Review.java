@@ -24,21 +24,11 @@ public class Review {
 
     private String text;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id")
-    @NotEmpty
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "product_id", referencedColumnName = "id")
     private Product product;
 
-    public Review(String publisher, Integer starRating, String text) {
-        this.publisher = publisher;
-        this.starRating = starRating;
-        this.text = text;
-    }
-
-    public Review(String publisher, Integer starRating, String text, Product product) {
-        this.publisher = publisher;
-        this.starRating = starRating;
-        this.text = text;
+    public void assignProduct(Product product) {
         this.product = product;
     }
 }

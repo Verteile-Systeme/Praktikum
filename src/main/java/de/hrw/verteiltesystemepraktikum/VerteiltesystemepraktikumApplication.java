@@ -6,8 +6,6 @@ import de.hrw.verteiltesystemepraktikum.appuser.AppUser;
 import de.hrw.verteiltesystemepraktikum.appuser.AppUserRepository;
 import de.hrw.verteiltesystemepraktikum.product.Product;
 import de.hrw.verteiltesystemepraktikum.product.ProductRepository;
-import de.hrw.verteiltesystemepraktikum.review.Review;
-import de.hrw.verteiltesystemepraktikum.review.ReviewService;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,7 +48,7 @@ public class VerteiltesystemepraktikumApplication {
 
 	// TODO: Die folgenden Zeilen müssen auskommentiert werden, wenn die Tests ausgeführt werden.
 	@Bean
-	CommandLineRunner commandLineRunner(AppUserRepository appUserRepository, ProductRepository productRepository, ReviewService reviewService) {
+	CommandLineRunner commandLineRunner(AppUserRepository appUserRepository, ProductRepository productRepository) {
 		return args -> {
 			if(Boolean.parseBoolean(genrateTestdata)) {
 				for (int i = 0; i < 10; i++) {
