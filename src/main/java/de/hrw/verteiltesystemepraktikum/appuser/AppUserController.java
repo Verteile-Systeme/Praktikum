@@ -22,7 +22,7 @@ public class AppUserController {
     public ResponseEntity<?> deleteUserById(@PathVariable Long id) {
         try {
             appUserService.deleteUserById(id);
-            return new ResponseEntity(HttpStatus.OK);
+            return new ResponseEntity("Deleted successfully.",HttpStatus.OK);
         } catch (UserNotFoundException ex) {
             return new ResponseEntity(ex.getMessage(), HttpStatus.NOT_FOUND);
         }

@@ -58,9 +58,7 @@ public class AppUserServiceImpl implements AppUserService {
                     appUser.setAddress(updatedAppUser.getAddress());
                     appUser.setPassword(updatedAppUser.getPassword());
                     return appUserRepository.save(appUser);
-                }).orElseGet(() -> {
-                    return appUserRepository.save(updatedAppUser);
-                });
+                }).orElseGet(() -> appUserRepository.save(updatedAppUser));
     }
 
     @Override
