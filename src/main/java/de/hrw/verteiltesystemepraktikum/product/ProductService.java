@@ -22,7 +22,13 @@ public interface ProductService {
 
     List<Product> updateAllProducts(Product updatedProduct);
 
+    //Reviews
+
     Review addReviewToProduct(Long productId, Review review) throws ProductNotFoundException;
 
     Set<Review> showReviewsToProduct(Long productId) throws ProductNotFoundException;
+
+    void deleteAllReviewsToProduct(Long productId) throws ProductNotFoundException;
+
+    void deleteReviewById(Long id);
 }

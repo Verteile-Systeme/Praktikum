@@ -87,10 +87,15 @@ public class ProductController {
     public ResponseEntity<?> addReviewToProduct(
             @RequestBody Review review,
             @PathVariable Long id) {
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(productService.addReviewToProduct(id, review));
+        try {
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(productService.addReviewToProduct(id, review));
+        } catch (ProductNotFoundException ex) {
+            return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+        }
+
     }
 
     @GetMapping("/{id}/ratings")
@@ -107,6 +112,27 @@ public class ProductController {
                     .status(HttpStatus.NOT_FOUND)
                     .body(ex.getMessage());
         }
-
     }
+
+    @DeleteMapping("/{id}/ratings")
+    public ResponseEntity<?> deleteReviewsToProduct(
+            @PathVariable Long id
+    ) {
+        try {
+            productService.deleteAllReviewsToProduct(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (ProductNotFoundException ex) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(ex.getMessage());
+        }
+    }
+
+    @DeleteMapping("/reviews/{id}")
+    public ResponseEntity<?> deleteReview(@PathVariable Long id) {
+        productService.deleteReviewById(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
 }
