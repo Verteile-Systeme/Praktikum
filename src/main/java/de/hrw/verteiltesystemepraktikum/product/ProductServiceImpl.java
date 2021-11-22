@@ -88,21 +88,40 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Review addReviewToProduct(Long productId, Review review) throws ProductNotFoundException {
         Optional<Product> optionalProduct = this.findProductById(productId);
-        if(optionalProduct.isPresent()){
+        if (optionalProduct.isPresent()) {
             Product product = optionalProduct.get();
             review.assignProduct(product);
             return reviewRepository.save(review);
         }
-        return null;
+        String errorString = "The specified id <" + productId + "> does not exists.";
+        throw new ProductNotFoundException(errorString);
     }
 
     @Override
     public Set<Review> showReviewsToProduct(Long productId) throws ProductNotFoundException {
         Optional<Product> optionalProduct = this.findProductById(productId);
-        if(optionalProduct.isPresent()) {
-            return optionalProduct.get().getReviews();
+        if (optionalProduct.isPresent()) {
+            return new HashSet<>(reviewRepository.findByProductId(optionalProduct.get().getId()));
         }
         String errorString = "The specified id <" + productId + "> does not exists.";
         throw new ProductNotFoundException(errorString);
+    }
+
+    @Override
+    public void deleteAllReviewsToProduct(Long productId) throws ProductNotFoundException {
+        Optional<Product> optionalProduct = this.findProductById(productId);
+        if (!optionalProduct.isPresent()) {
+            String errorString = "The specified id <" + productId + "> does not exists.";
+            throw new ProductNotFoundException(errorString);
+        }
+        List<Review> reviewList = reviewRepository.findByProductId(productId);
+        reviewList.stream().forEach(review -> {
+            this.deleteReviewById(review.getId());
+        });
+    }
+
+    @Override
+    public void deleteReviewById(Long id) {
+        reviewRepository.deleteById(id);
     }
 }

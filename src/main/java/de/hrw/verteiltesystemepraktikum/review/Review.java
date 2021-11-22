@@ -4,7 +4,6 @@ import de.hrw.verteiltesystemepraktikum.product.Product;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 
 @Entity
 @NoArgsConstructor
@@ -24,7 +23,7 @@ public class Review {
 
     private String text;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "product_id", referencedColumnName = "id")
     private Product product;
 

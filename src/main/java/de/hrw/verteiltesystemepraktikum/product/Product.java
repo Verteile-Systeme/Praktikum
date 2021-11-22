@@ -36,9 +36,13 @@ public class Product {
 
     private Integer oldPrice;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "product")
-    private Set<Review> reviews = new HashSet<>();
+//    @JsonIgnore
+//    @OneToMany(
+//            mappedBy = "product",
+//            cascade = CascadeType.ALL,
+//            orphanRemoval = true
+//    )
+//    private Set<Review> reviews = new HashSet<>();
 
     public Product(String name, String brand, Integer newPrice, Integer oldPrice) {
         this.name = name;

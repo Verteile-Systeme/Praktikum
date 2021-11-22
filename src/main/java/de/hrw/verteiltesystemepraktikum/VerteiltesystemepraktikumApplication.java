@@ -71,8 +71,8 @@ public class VerteiltesystemepraktikumApplication {
 					Faker faker = new Faker();
 					String name = faker.commerce().productName();
 					String brand = faker.commerce().department();
-					int newPrice = Integer.parseInt(faker.commerce().price().replace(",", ""));
-					int oldPrice = Integer.parseInt(faker.commerce().price().replace(",", ""));
+					int newPrice = Integer.parseInt(faker.commerce().price().replace(".", ""));
+					int oldPrice = Integer.parseInt(faker.commerce().price().replace(".", ""));
 					productRepository.save(new Product(
 							name,
 							brand,
