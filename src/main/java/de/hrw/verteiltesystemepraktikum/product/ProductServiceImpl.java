@@ -124,4 +124,28 @@ public class ProductServiceImpl implements ProductService {
     public void deleteReviewById(Long id) {
         reviewRepository.deleteById(id);
     }
+
+    @Override
+    public Optional<Review> showSpecificReviewToProduct(Long productId, Long reviewId) throws ProductNotFoundException, ReviewNotFoundException {
+        Optional<Product> optionalProduct = this.findProductById(productId);
+        if (!optionalProduct.isPresent()) {
+            String errorString = "The specified Product-ID <" + productId + "> does not exists.";
+            throw new ProductNotFoundException(errorString);
+        }
+        Optional<Review> optionalReview = reviewRepository.findById(reviewId);
+        if (!optionalReview.isPresent()) {
+            String errorString = "The specified Review-ID <" + reviewId + "> does not exists.";
+            throw new ReviewNotFoundException(errorString);
+        }
+        List<Review> reviewList = reviewRepository.findByProductId(productId);
+        return Optional.ofNullable(reviewList
+                .stream()
+                .filter(review -> review.getId() == reviewId)
+                .findAny()
+                .orElseThrow(() -> {
+                    String errorString =
+                            "The specified Product-ID " + productId + " with does not feature the Review-ID " + reviewId + ".";
+                    return new ReviewNotFoundException(errorString);
+                }));
+    }
 }

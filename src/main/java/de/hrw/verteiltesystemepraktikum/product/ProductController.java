@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/products")
@@ -128,11 +129,21 @@ public class ProductController {
         }
     }
 
-    @DeleteMapping("/reviews/{id}")
-    public ResponseEntity<?> deleteReview(@PathVariable Long id) {
-        productService.deleteReviewById(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+    @GetMapping("/{productId}/ratings/{reviewId}")
+    public ResponseEntity<?> showRewviewWithId(
+        @PathVariable Long productId,
+        @PathVariable Long reviewId
+    ) {
+        try {
+            Optional<Review> optionalReview = productService.showSpecificReviewToProduct(productId, reviewId);
+            return new ResponseEntity<>(optionalReview.get(),HttpStatus.OK);
+        } catch (ProductNotFoundException | ReviewNotFoundException ex) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(ex.getMessage());
+        }
     }
+
 
 
 }

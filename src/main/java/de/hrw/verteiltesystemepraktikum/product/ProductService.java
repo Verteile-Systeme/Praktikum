@@ -31,4 +31,6 @@ public interface ProductService {
     void deleteAllReviewsToProduct(Long productId) throws ProductNotFoundException;
 
     void deleteReviewById(Long id);
+
+    Optional<Review> showSpecificReviewToProduct(Long productId, Long reviewId) throws ProductNotFoundException, ReviewNotFoundException;
 }
