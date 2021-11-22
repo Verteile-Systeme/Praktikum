@@ -97,7 +97,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Set<Review> showReviewsToProduct(Long productId) throws ProductNotFoundException {
+    public Set<Review> getAllReviewsToProduct(Long productId) throws ProductNotFoundException {
         Optional<Product> optionalProduct = this.findProductById(productId);
         if (optionalProduct.isPresent()) {
             return new HashSet<>(reviewRepository.findByProductId(optionalProduct.get().getId()));
@@ -151,7 +151,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Review updateSpecificReviewToProduct(Long productId, Long reviewId, Review updatedReview) throws ProductNotFoundException {
         Optional<Review> optional = getSpecificReviewToProduct(productId, reviewId);
-        if(optional.isPresent()) {
+        if (optional.isPresent()) {
             return reviewRepository.findById(optional.get().getId())
                     .map(review -> {
                         review.setPublisher(updatedReview.getPublisher());
@@ -161,6 +161,21 @@ public class ProductServiceImpl implements ProductService {
                         return reviewRepository.save(review);
                     })
                     .orElseGet(() -> reviewRepository.save(updatedReview));
+        }
+        return null;
+    }
+
+    @Override
+    public List<Review> updateAllReviewsToProduct(Long productId, Review updatedReview) throws ProductNotFoundException {
+        List<Review> updatedReviews = new ArrayList<>();
+        Set<Review> allReviews = this.getAllReviewsToProduct(productId);
+
+        if (!allReviews.isEmpty()) {
+            for (Review temp :
+                    allReviews) {
+                updatedReviews.add(updateSpecificReviewToProduct(productId, temp.getId(), updatedReview));
+            }
+            return updatedReviews;
         }
         return null;
     }

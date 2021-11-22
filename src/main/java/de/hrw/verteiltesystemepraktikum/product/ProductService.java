@@ -26,7 +26,7 @@ public interface ProductService {
 
     Review addReviewToProduct(Long productId, Review review) throws ProductNotFoundException;
 
-    Set<Review> showReviewsToProduct(Long productId) throws ProductNotFoundException;
+    Set<Review> getAllReviewsToProduct(Long productId) throws ProductNotFoundException;
 
     void deleteAllReviewsToProduct(Long productId) throws ProductNotFoundException;
 
@@ -35,4 +35,6 @@ public interface ProductService {
     Optional<Review> getSpecificReviewToProduct(Long productId, Long reviewId) throws ProductNotFoundException, ReviewNotFoundException;
 
     Review updateSpecificReviewToProduct(Long productId, Long reviewId, Review updatedReview) throws ProductNotFoundException;
+
+    List<Review> updateAllReviewsToProduct(Long productId, Review updatedReview) throws ProductNotFoundException;
 }

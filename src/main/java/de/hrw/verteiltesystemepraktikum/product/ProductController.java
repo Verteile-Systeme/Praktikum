@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/products")
@@ -107,7 +106,7 @@ public class ProductController {
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .contentType(MediaType.APPLICATION_JSON)
-                    .body(productService.showReviewsToProduct(id));
+                    .body(productService.getAllReviewsToProduct(id));
         } catch (ProductNotFoundException ex) {
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
@@ -131,10 +130,19 @@ public class ProductController {
 
     @PutMapping("/{id}/ratings")
     public ResponseEntity<?> updateAllReviewsToProduct(
-            @PathVariable Long id
+            @PathVariable Long id,
+            @RequestBody Review updatedReview
     ) {
-        //TODO: Implement
-        return null;
+        try {
+            return new
+                    ResponseEntity<>(
+                            productService.updateAllReviewsToProduct(id, updatedReview),
+                    HttpStatus.OK);
+        } catch (ProductNotFoundException | ReviewNotFoundException ex) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(ex.getMessage());
+        }
     }
 
     @GetMapping("/{productId}/ratings/{reviewId}")
