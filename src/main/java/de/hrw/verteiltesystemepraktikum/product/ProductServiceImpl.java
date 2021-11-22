@@ -53,21 +53,7 @@ public class ProductServiceImpl implements ProductService {
                     product.setOldPrice(updatedProduct.getOldPrice());
                     product.setNewPrice(updatedProduct.getNewPrice());
                     return productRepository.save(product);
-                }).orElseGet(() -> {
-                    return productRepository.save(updatedProduct);
-                });
-    }
-
-    @Override
-    public List<Product> getAllProducts() {
-        return productRepository.findAll(
-                Sort.by(Sort.Direction.ASC, "id")
-        );
-    }
-
-    @Override
-    public Optional<Product> findProductById(Long id) {
-        return productRepository.findById(id);
+                }).orElseGet(() -> productRepository.save(updatedProduct));
     }
 
     @Override
@@ -84,6 +70,19 @@ public class ProductServiceImpl implements ProductService {
         }
         return null;
     }
+
+    @Override
+    public List<Product> getAllProducts() {
+        return productRepository.findAll(
+                Sort.by(Sort.Direction.ASC, "id")
+        );
+    }
+
+    @Override
+    public Optional<Product> findProductById(Long id) {
+        return productRepository.findById(id);
+    }
+
 
     @Override
     public Review addReviewToProduct(Long productId, Review review) throws ProductNotFoundException {
@@ -126,7 +125,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Optional<Review> showSpecificReviewToProduct(Long productId, Long reviewId) throws ProductNotFoundException, ReviewNotFoundException {
+    public Optional<Review> getSpecificReviewToProduct(Long productId, Long reviewId) throws ProductNotFoundException, ReviewNotFoundException {
         Optional<Product> optionalProduct = this.findProductById(productId);
         if (!optionalProduct.isPresent()) {
             String errorString = "The specified Product-ID <" + productId + "> does not exists.";
@@ -148,4 +147,23 @@ public class ProductServiceImpl implements ProductService {
                     return new ReviewNotFoundException(errorString);
                 }));
     }
+
+    @Override
+    public Review updateSpecificReviewToProduct(Long productId, Long reviewId, Review updatedReview) throws ProductNotFoundException {
+        Optional<Review> optional = getSpecificReviewToProduct(productId, reviewId);
+        if(optional.isPresent()) {
+            return reviewRepository.findById(optional.get().getId())
+                    .map(review -> {
+                        review.setPublisher(updatedReview.getPublisher());
+                        review.setStarRating(updatedReview.getStarRating());
+                        review.setText(updatedReview.getText());
+                        review.setProduct(review.getProduct());
+                        return reviewRepository.save(review);
+                    })
+                    .orElseGet(() -> reviewRepository.save(updatedReview));
+        }
+        return null;
+    }
+
+
 }

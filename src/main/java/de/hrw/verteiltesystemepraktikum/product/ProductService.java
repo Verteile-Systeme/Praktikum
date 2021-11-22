@@ -8,13 +8,13 @@ import java.util.Set;
 
 public interface ProductService {
 
-    Product saveProduct( Product product);
+    Product saveProduct(Product product);
 
     void deleteProductById(Long id) throws ProductNotFoundException;
 
     Long deleteAllProducts();
 
-    Product updateProductById( Product product, Long id) throws ProductNotFoundException;
+    Product updateProductById(Product product, Long id) throws ProductNotFoundException;
 
     List<Product> getAllProducts();
 
@@ -32,5 +32,7 @@ public interface ProductService {
 
     void deleteReviewById(Long id);
 
-    Optional<Review> showSpecificReviewToProduct(Long productId, Long reviewId) throws ProductNotFoundException, ReviewNotFoundException;
+    Optional<Review> getSpecificReviewToProduct(Long productId, Long reviewId) throws ProductNotFoundException, ReviewNotFoundException;
+
+    Review updateSpecificReviewToProduct(Long productId, Long reviewId, Review updatedReview) throws ProductNotFoundException;
 }

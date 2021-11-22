@@ -129,14 +129,38 @@ public class ProductController {
         }
     }
 
+    @PutMapping("/{id}/ratings")
+    public ResponseEntity<?> updateAllReviewsToProduct(
+            @PathVariable Long id
+    ) {
+        //TODO: Implement
+        return null;
+    }
+
     @GetMapping("/{productId}/ratings/{reviewId}")
     public ResponseEntity<?> showRewviewWithId(
         @PathVariable Long productId,
         @PathVariable Long reviewId
     ) {
         try {
-            Optional<Review> optionalReview = productService.showSpecificReviewToProduct(productId, reviewId);
-            return new ResponseEntity<>(optionalReview.get(),HttpStatus.OK);
+            return new ResponseEntity<>(productService.getSpecificReviewToProduct(productId, reviewId).get(),HttpStatus.OK);
+        } catch (ProductNotFoundException | ReviewNotFoundException ex) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(ex.getMessage());
+        }
+    }
+
+    @PutMapping("{productId}/ratings/{reviewId}")
+    public ResponseEntity<?> updateReviewWithId(
+            @PathVariable Long productId,
+            @PathVariable Long reviewId,
+            @RequestBody Review updatedReview
+    ) {
+        try {
+            return new ResponseEntity<>(
+                    productService.updateSpecificReviewToProduct(productId, reviewId, updatedReview),
+                    HttpStatus.OK);
         } catch (ProductNotFoundException | ReviewNotFoundException ex) {
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
