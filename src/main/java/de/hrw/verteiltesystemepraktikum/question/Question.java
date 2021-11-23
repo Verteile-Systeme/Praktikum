@@ -1,7 +1,6 @@
 package de.hrw.verteiltesystemepraktikum.question;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import de.hrw.verteiltesystemepraktikum.appuser.AppUser;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,6 +8,11 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 
+/**
+ * The data class represents a contanct request with an author, email, subject, content and whether it is read and answered.
+ *
+ * @author Dimitrios Barkas
+ */
 @Entity(
         name = "question"
 )

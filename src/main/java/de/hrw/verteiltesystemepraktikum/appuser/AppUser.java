@@ -9,9 +9,10 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
 /**
- * The data class represents a simple User which can be stored in a Database.
- * <p>
- * It is called appuser due to the keyword "data" is a reserved keyword in postgres.
+ * The data class represents a simple User with a firstname, lastname, email, address and password which can be stored in a Database.
+ * It is called appuser due to the keyword "user" is a reserved keyword in postgres and can not be used as a tablename.
+ *
+ * @author Dimitrios Barkas
  */
 @Entity(
         name = "appuser"

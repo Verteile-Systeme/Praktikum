@@ -5,6 +5,11 @@ import lombok.*;
 
 import javax.persistence.*;
 
+/**
+ * The data class represents a Review to a Product with a publisher, rating, text and product.
+ *
+ * @author Dimitrios Barkas
+ */
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor

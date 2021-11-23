@@ -1,7 +1,5 @@
 package de.hrw.verteiltesystemepraktikum.product;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import de.hrw.verteiltesystemepraktikum.review.Review;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,10 +8,12 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.util.HashSet;
-import java.util.Set;
 
-
+/**
+ * The data class represents a Product with a name, brand, new and old Price which can be stored in a Database.
+ *
+ * @author Dimitrios Barkas
+ */
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -35,14 +35,6 @@ public class Product {
     private Integer newPrice;
 
     private Integer oldPrice;
-
-//    @JsonIgnore
-//    @OneToMany(
-//            mappedBy = "product",
-//            cascade = CascadeType.ALL,
-//            orphanRemoval = true
-//    )
-//    private Set<Review> reviews = new HashSet<>();
 
     public Product(String name, String brand, Integer newPrice, Integer oldPrice) {
         this.name = name;
