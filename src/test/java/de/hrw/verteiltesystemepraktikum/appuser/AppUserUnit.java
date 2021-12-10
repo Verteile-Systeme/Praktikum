@@ -1,4 +1,4 @@
-package de.hrw.verteiltesystemepraktikum;
+package de.hrw.verteiltesystemepraktikum.appuser;
 
 import de.hrw.verteiltesystemepraktikum.appuser.AppUser;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +22,7 @@ public class AppUserUnit {
     }
 
     @Test
-    public void whenNotNullName_thenConstraintViolations() {
+    public void whenAppUserWrongInitialization_thenConstraintViolations() {
         AppUser appUser = new AppUser();
 
         Set<ConstraintViolation<AppUser>> violations =
@@ -32,4 +32,6 @@ public class AppUserUnit {
 
         assertThat(violations.size()).isEqualTo(5);
     }
+
+
 }

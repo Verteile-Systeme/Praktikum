@@ -109,12 +109,12 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void deleteAllReviewsToProduct(Long productId) throws ProductNotFoundException {
         Optional<Product> optionalProduct = this.findProductById(productId);
-        if (!optionalProduct.isPresent()) {
+        if (optionalProduct.isEmpty()) {
             String errorString = "The specified id <" + productId + "> does not exists.";
             throw new ProductNotFoundException(errorString);
         }
         List<Review> reviewList = reviewRepository.findByProductId(productId);
-        reviewList.stream().forEach(review -> {
+        reviewList.forEach(review -> {
             this.deleteReviewById(review.getId());
         });
     }
@@ -127,12 +127,12 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Optional<Review> getSpecificReviewToProduct(Long productId, Long reviewId) throws ProductNotFoundException, ReviewNotFoundException {
         Optional<Product> optionalProduct = this.findProductById(productId);
-        if (!optionalProduct.isPresent()) {
+        if (optionalProduct.isEmpty()) {
             String errorString = "The specified Product-ID <" + productId + "> does not exists.";
             throw new ProductNotFoundException(errorString);
         }
         Optional<Review> optionalReview = reviewRepository.findById(reviewId);
-        if (!optionalReview.isPresent()) {
+        if (optionalReview.isEmpty()) {
             String errorString = "The specified Review-ID <" + reviewId + "> does not exists.";
             throw new ReviewNotFoundException(errorString);
         }
@@ -151,18 +151,15 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Review updateSpecificReviewToProduct(Long productId, Long reviewId, Review updatedReview) throws ProductNotFoundException {
         Optional<Review> optional = getSpecificReviewToProduct(productId, reviewId);
-        if (optional.isPresent()) {
-            return reviewRepository.findById(optional.get().getId())
-                    .map(review -> {
-                        review.setPublisher(updatedReview.getPublisher());
-                        review.setStarRating(updatedReview.getStarRating());
-                        review.setText(updatedReview.getText());
-                        review.setProduct(review.getProduct());
-                        return reviewRepository.save(review);
-                    })
-                    .orElseGet(() -> reviewRepository.save(updatedReview));
-        }
-        return null;
+        return optional.map(value -> reviewRepository.findById(value.getId())
+                .map(review -> {
+                    review.setPublisher(updatedReview.getPublisher());
+                    review.setStarRating(updatedReview.getStarRating());
+                    review.setText(updatedReview.getText());
+                    review.setProduct(review.getProduct());
+                    return reviewRepository.save(review);
+                })
+                .orElseGet(() -> reviewRepository.save(updatedReview))).orElse(null);
     }
 
     @Override

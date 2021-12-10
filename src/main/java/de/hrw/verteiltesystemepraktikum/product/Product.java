@@ -26,10 +26,10 @@ public class Product {
     @NotNull
     private long id;
 
-    @NotEmpty(message = "{name.product.not.empty}")
+    @NotEmpty
     private String name;
 
-    @NotEmpty(message = "{brand.product.not.empty}")
+    @NotEmpty
     private String brand;
 
     private Integer newPrice;

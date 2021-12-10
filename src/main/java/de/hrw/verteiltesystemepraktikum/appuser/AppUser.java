@@ -26,20 +26,20 @@ public class AppUser {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotEmpty(message = "{firstname.not.empty}")
+    @NotEmpty
     private String firstname;
 
-    @NotEmpty(message = "{lastname.not.empty}")
+    @NotEmpty
     private String lastname;
 
-    @NotEmpty(message = "{email.not.empty}")
+    @NotEmpty
     @Email
     private String email;
 
-    @NotEmpty(message = "{address.not.empty}")
+    @NotEmpty
     private String address;
 
-    @NotEmpty(message = "{password.not.empty}")
+    @NotEmpty
     private String password;
 
     public AppUser(
