@@ -3,10 +3,8 @@ package de.hrw.verteiltesystemepraktikum;
 
 import com.github.javafaker.Faker;
 import de.hrw.verteiltesystemepraktikum.appuser.AppUser;
-import de.hrw.verteiltesystemepraktikum.appuser.AppUserRepository;
 import de.hrw.verteiltesystemepraktikum.appuser.AppUserService;
 import de.hrw.verteiltesystemepraktikum.product.Product;
-import de.hrw.verteiltesystemepraktikum.product.ProductRepository;
 import de.hrw.verteiltesystemepraktikum.product.ProductService;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -18,14 +16,18 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
+import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication
 @Slf4j
+@EnableSwagger2
+@Import(BeanValidatorPluginsConfiguration.class)
 public class VerteiltesystemepraktikumApplication {
 
-	private static Logger logger = LoggerFactory.getLogger(VerteiltesystemepraktikumApplication.class);
 
 	@Value("${load.initial.data}")
 	String generateTestData;
