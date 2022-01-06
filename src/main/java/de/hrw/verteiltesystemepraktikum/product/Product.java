@@ -35,11 +35,6 @@ public class Product {
     @NotEmpty
     private String brand;
 
-
-    @JsonIgnore
-    @ManyToMany(mappedBy = "products")
-    private Set<Order> orderSet = new HashSet<>();
-
     private Integer newPrice;
 
     private Integer oldPrice;

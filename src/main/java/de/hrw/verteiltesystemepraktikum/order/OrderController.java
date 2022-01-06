@@ -18,6 +18,7 @@ public class OrderController {
 
     @PostMapping
     public ResponseEntity<?> addOrder(@Valid @RequestBody Order order) {
+        System.out.println(order);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .contentType(MediaType.APPLICATION_JSON)

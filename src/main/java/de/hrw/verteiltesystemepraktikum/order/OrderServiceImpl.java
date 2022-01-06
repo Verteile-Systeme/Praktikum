@@ -17,7 +17,6 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order saveOrder(Order order) {
-        Order orderToSave = new Order();
         order.setDate(new Date());
         return orderRepository.save(order);
     }

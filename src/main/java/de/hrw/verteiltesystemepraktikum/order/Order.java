@@ -21,17 +21,9 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String products;
 
-    @ManyToMany
-    @JoinTable(
-            name = "product_to_order",
-            joinColumns = @JoinColumn(name = "order_id"),
-            inverseJoinColumns = @JoinColumn(name = "product_id")
-    )
-    private Set<Product> products = new HashSet<>();
-
-    @NotNull
-    private Integer quantity;
+    private String quantity;
 
     private Integer total;
 
