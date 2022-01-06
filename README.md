@@ -30,6 +30,21 @@ $ docker run -d \
 postgres:13.2
 ```
 
+### Server starten
+
+Um das Programm auszuführen, wechseln Sie in das Verzeichnis und geben Sie bitte einen der folgenden Kommandos ein:
+
+macOS/Linux:
+```
+./mvnw spring-boot:run
+```
+
+Windows:
+```
+mvnw spring-boot:run
+```
+
+
 Die API-Dokumentation mittels Swagger wird unter folgendem Pfad bereit gestellt:
 http://localhost:8080/swagger-ui/
 
