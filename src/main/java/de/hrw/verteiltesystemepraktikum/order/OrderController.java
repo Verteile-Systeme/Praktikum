@@ -1,4 +1,4 @@
-package de.hrw.verteiltesystemepraktikum.orders;
+package de.hrw.verteiltesystemepraktikum.order;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

@@ -22,6 +22,8 @@ import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+import java.util.HashSet;
+
 @SpringBootApplication
 @Slf4j
 @EnableSwagger2

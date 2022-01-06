@@ -1,4 +1,4 @@
-package de.hrw.verteiltesystemepraktikum.orders;
+package de.hrw.verteiltesystemepraktikum.order;
 
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;

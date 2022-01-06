@@ -30,8 +30,10 @@ $ docker run -d \
 postgres:13.2
 ```
 
-Implementierungskonzept unter: https://docs.google.com/document/d/1jQICKoYd83PKSi1MT0iY7RJtcJgNmUsq2cawXr_s23E/edit?usp=sharing
+Implementierungskonzept unter:
+https://docs.google.com/document/d/1jQICKoYd83PKSi1MT0iY7RJtcJgNmUsq2cawXr_s23E/edit?usp=sharing
 
 
-Die API-Dokumentation mittels Swagger wird unter folgendem Pfad bereit gestellt: http://localhost:8080/swagger-ui/
+Die API-Dokumentation mittels Swagger wird unter folgendem Pfad bereit gestellt:
+http://localhost:8080/swagger-ui/
 

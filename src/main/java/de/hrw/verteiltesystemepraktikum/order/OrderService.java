@@ -1,6 +1,4 @@
-package de.hrw.verteiltesystemepraktikum.orders;
-
-import de.hrw.verteiltesystemepraktikum.product.Product;
+package de.hrw.verteiltesystemepraktikum.order;
 
 import java.util.List;
 import java.util.Optional;

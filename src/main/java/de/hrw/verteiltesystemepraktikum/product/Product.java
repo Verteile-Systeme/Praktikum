@@ -1,5 +1,7 @@
 package de.hrw.verteiltesystemepraktikum.product;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import de.hrw.verteiltesystemepraktikum.order.Order;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,6 +10,8 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * The data class represents a Product with a name, brand, new and old Price which can be stored in a Database.
@@ -15,10 +19,10 @@ import javax.validation.constraints.NotNull;
  * @author Dimitrios Barkas
  */
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
 @Entity
+@Table(name = "products")
 public class Product {
 
     @Id
@@ -32,26 +36,29 @@ public class Product {
     @NotEmpty
     private String brand;
 
+    @ManyToMany
+    @JoinTable(
+            name="product_to_order",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "order_id")
+    )
+    private Set<Order> orderSet = new HashSet<>();
+
     private Integer newPrice;
 
     private Integer oldPrice;
 
-    public Product(String name, String brand, Integer newPrice, Integer oldPrice) {
+    public Product(
+            String name,
+            String brand,
+            Integer newPrice,
+            Integer oldPrice
+    ) {
         this.name = name;
         this.brand = brand;
         this.newPrice = newPrice;
         this.oldPrice = oldPrice;
     }
 
-    @Override
-    public String toString() {
-        return "Product{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", brand='" + brand + '\'' +
-                ", newPrice=" + newPrice +
-                ", oldPrice=" + oldPrice +
-                '}';
-    }
 
 }
