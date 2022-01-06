@@ -1,13 +1,11 @@
 package de.hrw.verteiltesystemepraktikum.order;
 
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.hrw.verteiltesystemepraktikum.product.Product;
 import lombok.*;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -32,14 +30,12 @@ public class Order {
     )
     private Set<Product> products = new HashSet<>();
 
-    @NotEmpty
-    private Double quantity;
+    @NotNull
+    private Integer quantity;
 
-    @NotEmpty
-    private Double total;
+    private Integer total;
 
-    @NotEmpty
-    @DateTimeFormat
+    @Temporal(TemporalType.DATE)
     private Date date;
 
     //void addToOrder();

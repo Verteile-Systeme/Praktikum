@@ -24,7 +24,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         Map<String, Object> body = new HashMap<>();
         ex.getBindingResult()
                 .getFieldErrors()
-                .stream()
                 .forEach(x -> {
                             body.put(x.getField(), x.getDefaultMessage());
                         }

@@ -4,6 +4,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,7 +16,11 @@ public class OrderServiceImpl implements OrderService {
     public OrderServiceImpl(OrderRepository orderRepository) { this.orderRepository = orderRepository; }
 
     @Override
-    public Order saveOrder(Order order) { return orderRepository.save(order); }
+    public Order saveOrder(Order order) {
+        Order orderToSave = new Order();
+        order.setDate(new Date());
+        return orderRepository.save(order);
+    }
 
     @Override
     public void deleteOrderById(Long id) throws OrderNotFoundException {
