@@ -7,8 +7,8 @@ Verteilte Systeme an der Hochschule Ruhrwest für das WiSe 21/22.
 
 Folgende Studierende arbeiten an dem Projekt:
 
-* [Dimitrios Barkas](https://github.com/dimibarkas)
-* [Tim Cichon](https://github.com/dmticich)
+* [Dimitrios Barkas](https://github.com/dimibarkas) 10008891
+* [Tim Cichon](https://github.com/dmticich) 100009188
 
 ## Entwicklungsumgebung
 
@@ -29,10 +29,6 @@ $ docker run -d \
 -v /var/lib/db \
 postgres:13.2
 ```
-
-Implementierungskonzept unter:
-https://docs.google.com/document/d/1jQICKoYd83PKSi1MT0iY7RJtcJgNmUsq2cawXr_s23E/edit?usp=sharing
-
 
 Die API-Dokumentation mittels Swagger wird unter folgendem Pfad bereit gestellt:
 http://localhost:8080/swagger-ui/
