@@ -7,8 +7,8 @@ Verteilte Systeme an der Hochschule Ruhrwest für das WiSe 21/22.
 
 Folgende Studierende arbeiten an dem Projekt:
 
-* [Dimitrios Barkas](https://github.com/dimibarkas)
-* [Tim Cichon](https://github.com/dmticich)
+* [Dimitrios Barkas](https://github.com/dimibarkas) 10008891
+* [Tim Cichon](https://github.com/dmticich) 100009188
 
 ## Entwicklungsumgebung
 
