@@ -139,7 +139,7 @@ public class ProductServiceImpl implements ProductService {
         List<Review> reviewList = reviewRepository.findByProductId(productId);
         return Optional.ofNullable(reviewList
                 .stream()
-                .filter(review -> review.getId() == reviewId)
+                .filter(review -> Objects.equals(review.getId(), reviewId))
                 .findAny()
                 .orElseThrow(() -> {
                     String errorString =

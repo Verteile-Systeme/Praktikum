@@ -27,7 +27,6 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotNull
     private long id;
 
     @NotEmpty
@@ -36,13 +35,10 @@ public class Product {
     @NotEmpty
     private String brand;
 
-    @ManyToMany
-    @JoinTable(
-            name="product_to_order",
-            joinColumns = @JoinColumn(name = "product_id"),
-            inverseJoinColumns = @JoinColumn(name = "order_id")
-    )
-    private Set<Order> orderSet = new HashSet<>();
+
+    @JsonIgnore
+    @ManyToMany(mappedBy = "products")
+    private Set<Order> orderSet;
 
     private Integer newPrice;
 
