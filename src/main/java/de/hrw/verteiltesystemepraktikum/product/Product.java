@@ -38,7 +38,7 @@ public class Product {
 
     @JsonIgnore
     @ManyToMany(mappedBy = "products")
-    private Set<Order> orderSet;
+    private Set<Order> orderSet = new HashSet<>();
 
     private Integer newPrice;
 

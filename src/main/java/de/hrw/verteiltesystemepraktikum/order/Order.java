@@ -30,7 +30,7 @@ public class Order {
             joinColumns = @JoinColumn(name = "order_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id")
     )
-    private Set<Product> products;
+    private Set<Product> products = new HashSet<>();
 
     @NotEmpty
     private Double quantity;
@@ -41,5 +41,7 @@ public class Order {
     @NotEmpty
     @DateTimeFormat
     private Date date;
+
+    //void addToOrder();
 
 }
