@@ -106,7 +106,7 @@ public class ProductController {
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .contentType(MediaType.APPLICATION_JSON)
-                    .body(productService.showReviewsToProduct(id));
+                    .body(productService.getAllReviewsToProduct(id));
         } catch (ProductNotFoundException ex) {
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
@@ -128,11 +128,54 @@ public class ProductController {
         }
     }
 
-    @DeleteMapping("/reviews/{id}")
-    public ResponseEntity<?> deleteReview(@PathVariable Long id) {
-        productService.deleteReviewById(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+    @PutMapping("/{id}/ratings")
+    public ResponseEntity<?> updateAllReviewsToProduct(
+            @PathVariable Long id,
+            @RequestBody Review updatedReview
+    ) {
+        try {
+            return new
+                    ResponseEntity<>(
+                            productService.updateAllReviewsToProduct(id, updatedReview),
+                    HttpStatus.OK);
+        } catch (ProductNotFoundException | ReviewNotFoundException ex) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(ex.getMessage());
+        }
     }
+
+    @GetMapping("/{productId}/ratings/{reviewId}")
+    public ResponseEntity<?> showRewviewWithId(
+        @PathVariable Long productId,
+        @PathVariable Long reviewId
+    ) {
+        try {
+            return new ResponseEntity<>(productService.getSpecificReviewToProduct(productId, reviewId).get(),HttpStatus.OK);
+        } catch (ProductNotFoundException | ReviewNotFoundException ex) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(ex.getMessage());
+        }
+    }
+
+    @PutMapping("{productId}/ratings/{reviewId}")
+    public ResponseEntity<?> updateReviewWithId(
+            @PathVariable Long productId,
+            @PathVariable Long reviewId,
+            @RequestBody Review updatedReview
+    ) {
+        try {
+            return new ResponseEntity<>(
+                    productService.updateSpecificReviewToProduct(productId, reviewId, updatedReview),
+                    HttpStatus.OK);
+        } catch (ProductNotFoundException | ReviewNotFoundException ex) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(ex.getMessage());
+        }
+    }
+
 
 
 }

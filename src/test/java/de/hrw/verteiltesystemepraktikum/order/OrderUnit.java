@@ -1,6 +1,5 @@
-package de.hrw.verteiltesystemepraktikum;
+package de.hrw.verteiltesystemepraktikum.order;
 
-import de.hrw.verteiltesystemepraktikum.appuser.AppUser;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -11,8 +10,9 @@ import javax.validation.Validator;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
 @Slf4j
-public class AppUserUnit {
+public class OrderUnit {
 
     private static Validator validator;
 
@@ -22,14 +22,16 @@ public class AppUserUnit {
     }
 
     @Test
-    public void whenNotNullName_thenConstraintViolations() {
-        AppUser appUser = new AppUser();
+    public void whenOrderWrongInit_thenConstraintViolations() {
+        Order order = new Order();
 
-        Set<ConstraintViolation<AppUser>> violations =
-                validator.validate(appUser);
+        Set<ConstraintViolation<Order>> violations =
+                validator.validate(order);
 
         violations.forEach(violation -> log.info(String.valueOf(violation)));
 
-        assertThat(violations.size()).isEqualTo(5);
+        assertThat(violations.size()).isEqualTo(2);
     }
+
+
 }

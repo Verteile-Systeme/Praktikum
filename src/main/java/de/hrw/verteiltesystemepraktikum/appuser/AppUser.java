@@ -9,9 +9,10 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
 /**
- * The data class represents a simple User which can be stored in a Database.
- * <p>
- * It is called appuser due to the keyword "data" is a reserved keyword in postgres.
+ * The data class represents a simple User with a firstname, lastname, email, address and password which can be stored in a Database.
+ * It is called appuser due to the keyword "user" is a reserved keyword in postgres and can not be used as a tablename.
+ *
+ * @author Dimitrios Barkas
  */
 @Entity(
         name = "appuser"
@@ -25,20 +26,20 @@ public class AppUser {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotEmpty(message = "{firstname.not.empty}")
+    @NotEmpty
     private String firstname;
 
-    @NotEmpty(message = "{lastname.not.empty}")
+    @NotEmpty
     private String lastname;
 
-    @NotEmpty(message = "{email.not.empty}")
+    @NotEmpty
     @Email
     private String email;
 
-    @NotEmpty(message = "{address.not.empty}")
+    @NotEmpty
     private String address;
 
-    @NotEmpty(message = "{password.not.empty}")
+    @NotEmpty
     private String password;
 
     public AppUser(

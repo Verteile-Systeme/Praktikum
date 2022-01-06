@@ -3,29 +3,36 @@ package de.hrw.verteiltesystemepraktikum;
 
 import com.github.javafaker.Faker;
 import de.hrw.verteiltesystemepraktikum.appuser.AppUser;
-import de.hrw.verteiltesystemepraktikum.appuser.AppUserRepository;
+import de.hrw.verteiltesystemepraktikum.appuser.AppUserService;
 import de.hrw.verteiltesystemepraktikum.product.Product;
-import de.hrw.verteiltesystemepraktikum.product.ProductRepository;
+import de.hrw.verteiltesystemepraktikum.product.ProductService;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
+import springfox.bean.validators.configuration.BeanValidatorPluginsConfiguration;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
+import java.util.HashSet;
 
 @SpringBootApplication
 @Slf4j
+@EnableSwagger2
+@Import(BeanValidatorPluginsConfiguration.class)
 public class VerteiltesystemepraktikumApplication {
 
-	private static Logger logger = LoggerFactory.getLogger(VerteiltesystemepraktikumApplication.class);
 
-	@Value(value = "${load.initial.data}")
-	String genrateTestdata;
+	@Value("${load.initial.data}")
+	String generateTestData;
 
 	@Bean
 	public MessageSource messageSource() {
@@ -46,11 +53,17 @@ public class VerteiltesystemepraktikumApplication {
 		SpringApplication.run(VerteiltesystemepraktikumApplication.class, args);
 	}
 
+	@Autowired
+	private AppUserService appUserService;
+
+	@Autowired
+	private ProductService productService;
+
 	// TODO: Die folgenden Zeilen müssen auskommentiert werden, wenn die Tests ausgeführt werden.
 	@Bean
-	CommandLineRunner commandLineRunner(AppUserRepository appUserRepository, ProductRepository productRepository) {
+	CommandLineRunner commandLineRunner() {
 		return args -> {
-			if(Boolean.parseBoolean(genrateTestdata)) {
+			if(Boolean.parseBoolean(generateTestData)) {
 				for (int i = 0; i < 10; i++) {
 					Faker faker = new Faker();
 					String firstname = faker.name().firstName();
@@ -58,7 +71,7 @@ public class VerteiltesystemepraktikumApplication {
 					String password = faker.crypto().md5();
 					String address = faker.address().fullAddress();
 					String email = String.format("%s.%s@%s.com", firstname, lastname, lastname);
-					appUserRepository.save(new AppUser(
+					appUserService.saveUser(new AppUser(
 							firstname,
 							lastname,
 							email,
@@ -73,7 +86,7 @@ public class VerteiltesystemepraktikumApplication {
 					String brand = faker.commerce().department();
 					int newPrice = Integer.parseInt(faker.commerce().price().replace(".", ""));
 					int oldPrice = Integer.parseInt(faker.commerce().price().replace(".", ""));
-					productRepository.save(new Product(
+					productService.saveProduct(new Product(
 							name,
 							brand,
 							newPrice,

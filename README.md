@@ -21,7 +21,8 @@ Benötigte Software:
 
 ```bash
 $ docker run -d \
---name postgres \
+--name postgresVS \
+-e POSTGRES_DB=postgreVS \
 -e POSTGRES_USER=postgres \
 -e POSTGRES_PASSWORD=postgres \
 -p 5432:5432 \
@@ -29,4 +30,10 @@ $ docker run -d \
 postgres:13.2
 ```
 
-Implementierungskonzept unter: https://docs.google.com/document/d/1jQICKoYd83PKSi1MT0iY7RJtcJgNmUsq2cawXr_s23E/edit?usp=sharing
+Implementierungskonzept unter:
+https://docs.google.com/document/d/1jQICKoYd83PKSi1MT0iY7RJtcJgNmUsq2cawXr_s23E/edit?usp=sharing
+
+
+Die API-Dokumentation mittels Swagger wird unter folgendem Pfad bereit gestellt:
+http://localhost:8080/swagger-ui/
+
