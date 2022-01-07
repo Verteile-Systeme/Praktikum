@@ -8,19 +8,19 @@ import java.util.Set;
 
 public interface ProductService {
 
-    Product saveProduct(Product product);
+    String saveProduct(Product product);
 
-    void deleteProductById(Long id) throws ProductNotFoundException;
+    String deleteProductById(Long id) throws ProductNotFoundException;
 
-    Long deleteAllProducts();
+    String deleteAllProducts();
 
-    Product updateProductById(Product product, Long id) throws ProductNotFoundException;
+    String updateProductById(Product product, Long id) throws ProductNotFoundException;
 
     List<Product> getAllProducts();
 
     Optional<Product> findProductById(Long id);
 
-    List<Product> updateAllProducts(Product updatedProduct);
+    String updateAllProducts(Product updatedProduct);
 
     //Reviews
 

@@ -19,6 +19,7 @@ import java.util.Set;
  * @author Dimitrios Barkas
  */
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 @Entity

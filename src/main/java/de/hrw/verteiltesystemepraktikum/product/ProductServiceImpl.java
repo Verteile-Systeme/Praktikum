@@ -20,33 +20,34 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product saveProduct(Product product) {
-        return productRepository.save(product);
+    public String saveProduct(Product product) {
+        productRepository.save(product);
+        return "Created successfully";
     }
 
     @Override
-    public void deleteProductById(Long id) throws ProductNotFoundException {
+    public String deleteProductById(Long id) throws ProductNotFoundException {
         if (!productRepository.existsById(id)) {
             String errorString = "The specified id <" + id + "> does not exists.";
             throw new ProductNotFoundException(errorString);
         }
         productRepository.deleteById(id);
+        return "Deleted successfully";
     }
 
     @Override
-    public Long deleteAllProducts() {
-        Long entities = productRepository.count();
+    public String deleteAllProducts() {
         productRepository.deleteAll();
-        return entities;
+        return "Deleted successfully";
     }
 
     @Override
-    public Product updateProductById(Product updatedProduct, Long id) throws ProductNotFoundException {
+    public String updateProductById(Product updatedProduct, Long id) throws ProductNotFoundException {
         if (!productRepository.existsById(id)) {
             String errorString = "The specified id <" + id + "> does not exists.";
             throw new ProductNotFoundException(errorString);
         }
-        return productRepository.findById(id)
+        productRepository.findById(id)
                 .map(product -> {
                     product.setName(updatedProduct.getName());
                     product.setBrand(updatedProduct.getBrand());
@@ -54,19 +55,18 @@ public class ProductServiceImpl implements ProductService {
                     product.setNewPrice(updatedProduct.getNewPrice());
                     return productRepository.save(product);
                 }).orElseGet(() -> productRepository.save(updatedProduct));
+        return "Updates successfully";
     }
 
     @Override
-    public List<Product> updateAllProducts(Product updatedProduct) {
-        List<Product> updatedProducts = new ArrayList<>();
+    public String updateAllProducts(Product updatedProduct) {
         List<Product> allProducts = this.getAllProducts();
-
         if (!allProducts.isEmpty()) {
             for (Product temp :
                     allProducts) {
-                updatedProducts.add(updateProductById(updatedProduct, temp.getId()));
+                updateProductById(updatedProduct, temp.getId());
             }
-            return updatedProducts;
+            return "Updated successfully";
         }
         return null;
     }

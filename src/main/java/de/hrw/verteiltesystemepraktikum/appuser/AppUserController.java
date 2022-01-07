@@ -18,6 +18,23 @@ public class AppUserController {
         this.appUserService = appUserService;
     }
 
+    @PostMapping
+    @ResponseStatus(code = HttpStatus.CREATED)
+    public String addUser(@Valid @RequestBody AppUser appUser) {
+        appUserService.saveUser(appUser);
+        return "Created successfully";
+    }
+
+    @GetMapping
+    public List<AppUser> getUsers() {
+        return appUserService.getAllUsers();
+    }
+
+    @GetMapping("/{id}")
+    public Optional<AppUser> getUser(@PathVariable Long id) {
+        return appUserService.findUserById(id);
+    }
+
     @DeleteMapping("/{id}")
     public String deleteUserById(@PathVariable Long id) {
         appUserService.deleteUserById(id);
@@ -43,23 +60,6 @@ public class AppUserController {
         return "Updated successfully";
     }
 
-    @PostMapping
-    @ResponseStatus(code = HttpStatus.CREATED)
-    public String addUser(@Valid @RequestBody AppUser appUser) {
-        appUserService.saveUser(appUser);
-        return "Created successfully";
-    }
-
-    @GetMapping
-    public List<AppUser> getUsers() {
-        return appUserService.getAllUsers();
-    }
-
-    @GetMapping("/{id}")
-    public Optional<AppUser> getUser(@PathVariable Long id) {
-        return appUserService.findUserById(id);
-    }
-
     @ExceptionHandler({MailAlreadyExistsException.class})
     public ResponseEntity<String> handleException(MailAlreadyExistsException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT)
@@ -68,7 +68,7 @@ public class AppUserController {
 
     @ExceptionHandler({UserNotFoundException.class})
     public ResponseEntity<String> handleException(UserNotFoundException ex) {
-        return ResponseEntity.status(HttpStatus.CONFLICT)
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(ex.getMessage());
     }
 

@@ -1,5 +1,6 @@
 package de.hrw.verteiltesystemepraktikum.product;
 
+import de.hrw.verteiltesystemepraktikum.appuser.MailAlreadyExistsException;
 import de.hrw.verteiltesystemepraktikum.review.Review;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/products")
@@ -20,11 +22,9 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<?> addProduct(@Valid @RequestBody Product product) {
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(productService.saveProduct(product));
+    @ResponseStatus(code = HttpStatus.CREATED)
+    public String addProduct(@Valid @RequestBody Product product) {
+        return productService.saveProduct(product);
     }
 
     @GetMapping
@@ -33,55 +33,32 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getProductById(@PathVariable Long id) {
-        return productService.findProductById(id)
-                .map(product -> ResponseEntity
-                        .status(HttpStatus.OK)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .body(product))
-                .orElse(
-                        new ResponseEntity<>(HttpStatus.NOT_FOUND)
-                );
+    public Optional<Product> getProductById(@PathVariable Long id) {
+        return productService.findProductById(id);
     }
 
     @DeleteMapping
-    public ResponseEntity<?> deleteAllProducts() {
-        long entities = productService.deleteAllProducts();
-        String response = String.format("%d Entites deleted.", entities);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+    public String deleteAllProducts() {
+        return productService.deleteAllProducts();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteProductById(@PathVariable Long id) {
-        try {
-            productService.deleteProductById(id);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (ProductNotFoundException ex) {
-            return new ResponseEntity(ex.getMessage(), HttpStatus.NOT_FOUND);
-        }
+    public String deleteProductById(@PathVariable Long id) {
+            return productService.deleteProductById(id);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateProductById(@PathVariable Long id,
+    public String updateProductById(@PathVariable Long id,
                                                @Valid @RequestBody Product product) {
-        try {
-            return new ResponseEntity<>(productService.updateProductById(product, id), HttpStatus.OK);
-        } catch (ProductNotFoundException ex) {
-            return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
-        }
+        return productService.updateProductById(product, id);
     }
 
     @PutMapping
-    public ResponseEntity<?> updateAllProducts(@Valid @RequestBody Product updatedProduct) {
-        try {
-            return ResponseEntity
-                    .status(HttpStatus.OK)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .body(productService.updateAllProducts(updatedProduct));
-        } catch (ProductNotFoundException ex) {
-            return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
-        }
+    public String updateAllProducts(@Valid @RequestBody Product updatedProduct) {
+        return productService.updateAllProducts(updatedProduct);
     }
+
+    //Review
 
     @PostMapping("/{id}/ratings")
     public ResponseEntity<?> addReviewToProduct(
@@ -174,6 +151,12 @@ public class ProductController {
                     .status(HttpStatus.NOT_FOUND)
                     .body(ex.getMessage());
         }
+    }
+
+    @ExceptionHandler({ProductNotFoundException.class})
+    public ResponseEntity<String> handleException(ProductNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(ex.getMessage());
     }
 
 
