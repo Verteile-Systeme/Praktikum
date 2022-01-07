@@ -2,7 +2,7 @@
 
 
 # Verteilte Systeme: Praktikum
-### Erläuterung des Implementierungskonzepts 
+## Erläuterung des Implementierungskonzepts 
 Ausgewähltes REST-API Design: rest-api-design-02
 
 Zur Realisierung der REST-API wurde die Programmiersprache JAVA in Kombination mit dem Spring-Boot Framework verwendet. Folgende Abhängigkeiten des Frameworks wurden genutzt:
@@ -21,6 +21,10 @@ Wir haben uns für die Umsetzung mit Java entschieden, da beide Teammitglieder k
 Das Open Source-Framework Spring (https://spring.io) ist eine der bekanntesten Lösungen wenn es um die Implementierung von Webanwendungen mit Java geht. Mithilfe der Quickstart Guides bietet es einen schnellen und einfachen Einstieg, bietet eine gut verständliche und  umfangreiche Dokumentation.
 
 
-### Teststrategie
-Um die Anwendung zu testen haben wir Tests in Form von Integrationstests verwendet. Grund dafür ist, dass kaum Business-Logik existiert die getestet werden muss. Die Validierung vor dem Erzeugen und damit dem Speichern einer Entität hat das Hibernate-Validation Framework übernommen.
+## Teststrategie
 
+Die Anwendung wurde getestet in dem für die jeweiligen Endpoints für die Controller Unit-Tests mit JUnit geschreiben wurden.
+Zusätzlich wurden Integrationstests mit dem Tool WebMcvTest des Spring-Frameworks verwendet.
+Für einige Endpunkte wurden auch Akzeptanztests geschrieben um allen Anforderungen der Vorgabe zu entsprechen.
+
+In der [README](../README.md) finden Sie eine Anleitung wie man alle Tests ausführt.

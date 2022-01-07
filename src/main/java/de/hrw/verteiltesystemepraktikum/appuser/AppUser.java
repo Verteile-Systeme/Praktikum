@@ -1,5 +1,6 @@
 package de.hrw.verteiltesystemepraktikum.appuser;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,6 +21,7 @@ import javax.validation.constraints.NotEmpty;
 @NoArgsConstructor
 @Getter
 @Setter
+@AllArgsConstructor
 public class AppUser {
 
     @Id

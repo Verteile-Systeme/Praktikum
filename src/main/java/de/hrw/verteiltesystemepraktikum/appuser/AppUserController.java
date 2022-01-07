@@ -1,12 +1,12 @@
 package de.hrw.verteiltesystemepraktikum.appuser;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/users", produces = "application/json")
@@ -19,58 +19,35 @@ public class AppUserController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteUserById(@PathVariable Long id) {
-        try {
-            appUserService.deleteUserById(id);
-            return new ResponseEntity<>("Deleted successfully.",HttpStatus.OK);
-        } catch (UserNotFoundException ex) {
-            return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
-        }
+    public String deleteUserById(@PathVariable Long id) {
+        appUserService.deleteUserById(id);
+        return "Deleted successfully";
     }
 
     @DeleteMapping
-    public ResponseEntity<?> deleteAllUsers() {
-        long entities = appUserService.deleteAllUsers();
-        String response = String.format("%d Entites deleted.", entities);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+    public String deleteAllUsers() {
+        return String.format("%d Entities deleted", appUserService.deleteAllUsers());
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateUserById(@PathVariable Long id,
-                                         @Valid @RequestBody AppUser appUser
-    ) {
-        try {
-            return new ResponseEntity<>(appUserService.updateUserById(appUser, id), HttpStatus.OK);
-        } catch (UserNotFoundException ex) {
-            return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
-        }
+    public String updateUserById(@PathVariable Long id,
+                                            @Valid @RequestBody AppUser appUser
+    ){
+        appUserService.updateUserById(appUser, id);
+        return "Updated successfully";
     }
 
     @PutMapping
-    public ResponseEntity<?> updateAllUsers(@Valid @RequestBody  AppUser updatedAppUser) {
-        try {
-            return ResponseEntity
-                    .status(HttpStatus.OK)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .body(appUserService.updateAllUsers(updatedAppUser));
-        } catch (UserNotFoundException ex) {
-            return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
-        }
+    public String updateAllUsers(@Valid @RequestBody AppUser updatedAppUser) {
+        appUserService.updateAllUsers(updatedAppUser);
+        return "Updated successfully";
     }
 
-
     @PostMapping
-    @ResponseBody
-    public ResponseEntity<?> addUser(@Valid @RequestBody AppUser appUser) {
-        try {
-            return ResponseEntity
-                    .status(HttpStatus.CREATED)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .body(appUserService.saveUser(appUser));
-        } catch (MailAlreadyExistsException ex) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(ex.getMessage());
-        }
+    @ResponseStatus(code = HttpStatus.CREATED)
+    public String addUser(@Valid @RequestBody AppUser appUser) {
+        appUserService.saveUser(appUser);
+        return "Created successfully";
     }
 
     @GetMapping
@@ -79,10 +56,20 @@ public class AppUserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AppUser> getUser(@PathVariable Long id) {
-        return appUserService.findUserById(id)
-                .map(appUser -> new ResponseEntity<>(appUser, HttpStatus.OK))
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    public Optional<AppUser> getUser(@PathVariable Long id) {
+        return appUserService.findUserById(id);
+    }
+
+    @ExceptionHandler({MailAlreadyExistsException.class})
+    public ResponseEntity<String> handleException(MailAlreadyExistsException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(ex.getMessage());
+    }
+
+    @ExceptionHandler({UserNotFoundException.class})
+    public ResponseEntity<String> handleException(UserNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(ex.getMessage());
     }
 
 

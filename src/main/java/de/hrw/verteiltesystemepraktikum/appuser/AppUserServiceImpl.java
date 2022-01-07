@@ -68,6 +68,10 @@ public class AppUserServiceImpl implements AppUserService {
 
     @Override
     public Optional<AppUser> findUserById(Long id) {
+        if(appUserRepository.findById(id).isEmpty()) {
+            String errorString = "The specified id <" + id + "> does not exists.";
+            throw new UserNotFoundException(errorString);
+        }
         return appUserRepository.findById(id);
     }
 

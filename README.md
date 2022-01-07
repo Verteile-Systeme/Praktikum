@@ -30,7 +30,7 @@ $ docker run -d \
 postgres:13.2
 ```
 
-### Server starten
+## Server starten
 
 Um das Programm auszuführen, wechseln Sie in das Verzeichnis und geben Sie bitte einen der folgenden Kommandos ein:
 
@@ -44,6 +44,32 @@ Windows:
 mvnw spring-boot:run
 ```
 
+Alternativ lässt sich auch eine JAR Datei über den Befehl bauen:
+```
+./mvnw clean package 
+```
+
+Diese lässt sich dann mit folgendem Befehl ausführen:
+
+```
+java -jar target/verteiltesystemepraktikum-0.0.1-SNAPSHOT.jar
+```
+
+Der Service ist unter der Adresse http://localhost:8080 erreichbar.
+
+## Tests 
+
+Um alle Tests automatisch auszuführen, geben Sie bitte den folgenden Befehl ein:
+
+```
+./mvnw test -Djacoco.skip=true
+```
+
+# Dokumentation
+
+Die Dokumentation finden Sie unter [Implementierungskonzept](./docs/Implementierungskonzept.md). 
+
+## Swagger 
 
 Die API-Dokumentation mittels Swagger wird unter folgendem Pfad bereit gestellt:
 http://localhost:8080/swagger-ui/
