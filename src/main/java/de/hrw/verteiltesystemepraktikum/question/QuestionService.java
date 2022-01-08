@@ -5,17 +5,17 @@ import java.util.Optional;
 
 public interface QuestionService {
 
-    Question saveQuestion(Question question);
+    String saveQuestion(Question question);
 
     List<Question> getAllQuestions();
 
-    Long deleteAllQuestions();
+    String deleteAllQuestions();
 
     Optional<Question> findQuestionById(Long id) throws QuestionNotFoundException;
 
-    Question updateQuestionById(Question question, Long id) throws QuestionNotFoundException;
+    String updateQuestionById(Question question, Long id) throws QuestionNotFoundException;
 
-    void deleteQuestionById(Long id) throws QuestionNotFoundException;
+    String deleteQuestionById(Long id) throws QuestionNotFoundException;
 
-    List<Question> updateAllQuestions(Question updatedQuestion);
+    String updateAllQuestions(Question updatedQuestion);
 }

@@ -1,11 +1,13 @@
 package de.hrw.verteiltesystemepraktikum.question;
 
+import de.hrw.verteiltesystemepraktikum.product.ProductNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -19,75 +21,44 @@ public class QuestionController {
     }
 
     @PostMapping
-    public ResponseEntity<?> saveQuestion(@Valid @RequestBody Question question) {
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(questionService.saveQuestion(question));
+    @ResponseStatus(code = HttpStatus.CREATED)
+    public String saveQuestion(@Valid @RequestBody Question question) {
+        return questionService.saveQuestion(question);
     }
 
     @GetMapping
-    public ResponseEntity<?> getAllQuestions() {
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(questionService.getAllQuestions());
+    public List<Question> getAllQuestions() {
+        return questionService.getAllQuestions();
     }
 
     @DeleteMapping
-    public ResponseEntity<?> deleteAllQuestions() {
-        long entites = questionService.deleteAllQuestions();
-        String response = String.format("%d Entites deleted.", entites);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+    public String deleteAllQuestions() {
+        return questionService.deleteAllQuestions();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getQuestionById(@PathVariable Long id) {
-        try {
-            return ResponseEntity
-                    .status(HttpStatus.OK)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .body(questionService.findQuestionById(id));
-        } catch (QuestionNotFoundException ex) {
-            return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
-        }
+    public Optional<Question> getQuestionById(@PathVariable Long id) {
+        return questionService.findQuestionById(id);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateQuestionById(@PathVariable Long id, @Valid @RequestBody Question updatedQuestion) {
-        Optional<Question> optionalQuestion = questionService.findQuestionById(id);
-        if (optionalQuestion.isPresent()) {
-            Question question = optionalQuestion.get();
-            if (question.equals(updatedQuestion)) {
-                return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
-            }
-        }
-        try {
-            return new ResponseEntity<>(questionService.updateQuestionById(updatedQuestion, id), HttpStatus.OK);
-        } catch (QuestionNotFoundException ex) {
-            return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
-        }
+    public String updateQuestionById(@PathVariable Long id, @Valid @RequestBody Question updatedQuestion) {
+        return questionService.updateQuestionById(updatedQuestion, id);
     }
 
     @PutMapping
-    public ResponseEntity<?> updateAllQuestions(@Valid @RequestBody Question updatedQuestion) {
-        try {
-            return ResponseEntity
-                    .status(HttpStatus.OK)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .body(questionService.updateAllQuestions(updatedQuestion));
-        } catch (QuestionNotFoundException ex) {
-            return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
-        }
+    public String updateAllQuestions(@Valid @RequestBody Question updatedQuestion) {
+        return questionService.updateAllQuestions(updatedQuestion);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteQuestionById(@PathVariable Long id) {
-        try {
-            questionService.deleteQuestionById(id);
-            return new ResponseEntity<>("Deleted successfully.",HttpStatus.OK);
-        } catch (QuestionNotFoundException ex) {
-            return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
-        }
+    public String deleteQuestionById(@PathVariable Long id) {
+        return questionService.deleteQuestionById(id);
+    }
+
+    @ExceptionHandler({QuestionNotFoundException.class})
+    public ResponseEntity<String> handleException(QuestionNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(ex.getMessage());
     }
 }

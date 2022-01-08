@@ -55,7 +55,7 @@ public class ProductServiceImpl implements ProductService {
                     product.setNewPrice(updatedProduct.getNewPrice());
                     return productRepository.save(product);
                 }).orElseGet(() -> productRepository.save(updatedProduct));
-        return "Updates successfully";
+        return "Updated successfully";
     }
 
     @Override

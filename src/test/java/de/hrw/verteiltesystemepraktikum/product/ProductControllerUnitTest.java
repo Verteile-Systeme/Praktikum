@@ -40,9 +40,6 @@ class ProductControllerUnitTest {
 
     List<Product> productList = Arrays.asList(testProduct1, testProduct2);
 
-
-
-
     @Test
     void addProduct() {
         when(productService.saveProduct(productInput)).thenReturn("Created successfully");

@@ -12,7 +12,7 @@ import java.util.Optional;
 @Service
 public class QuestionServiceImpl implements QuestionService {
 
-    private QuestionRepository questionRepository;
+    private final QuestionRepository questionRepository;
 
     @Autowired
     public QuestionServiceImpl(QuestionRepository questionRepository) {
@@ -20,8 +20,9 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public Question saveQuestion(@Valid Question question) {
-        return questionRepository.save(question);
+    public String saveQuestion(@Valid Question question) {
+        questionRepository.save(question);
+        return "Created successfully";
     }
 
     @Override
@@ -30,10 +31,9 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public Long deleteAllQuestions() {
-        Long entities = questionRepository.count();
+    public String deleteAllQuestions() {
         questionRepository.deleteAll();
-        return entities;
+        return "Deleted successfully";
     }
 
     @Override
@@ -46,42 +46,41 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public Question updateQuestionById(Question updatedQuestion, Long id) throws QuestionNotFoundException {
+    public String updateQuestionById(Question updatedQuestion, Long id) throws QuestionNotFoundException {
         if(!questionRepository.existsById(id)) {
             String errorString = "The specified id <" + id + "> does not exists.";
             throw new QuestionNotFoundException(errorString);
         }
-        return questionRepository.findById(id)
+        questionRepository.findById(id)
                 .map(question -> {
                     question.setAuthor(updatedQuestion.getAuthor());
                     question.setEmail(updatedQuestion.getEmail());
                     question.setSubject(updatedQuestion.getSubject());
                     question.setContent(updatedQuestion.getContent());
-                    question.setRead(updatedQuestion.isRead());
-                    question.setAnswered(updatedQuestion.isAnswered());
                     return questionRepository.save(question);
                 }).orElseGet(() -> questionRepository.save(updatedQuestion));
+        return "Updated successfully";
     }
 
     @Override
-    public void deleteQuestionById(Long id) throws QuestionNotFoundException {
+    public String deleteQuestionById(Long id) throws QuestionNotFoundException {
         if(!questionRepository.existsById(id)) {
             String errorString = "The specified id <" + id + "> does not exists.";
             throw new QuestionNotFoundException(errorString);
         }
         questionRepository.deleteById(id);
+        return "Deleted successfully";
     }
 
     @Override
-    public List<Question> updateAllQuestions(Question updatedQuestion) {
-        List<Question> updatedQuestions = new ArrayList<>();
+    public String updateAllQuestions(Question updatedQuestion) {
         List<Question> allQuestions = this.getAllQuestions();
         if(!allQuestions.isEmpty()) {
             for (Question temp :
                     allQuestions) {
-                updatedQuestions.add(updateQuestionById(updatedQuestion, temp.getId()));
+                updateQuestionById(updatedQuestion, temp.getId());
             }
-            return updatedQuestions;
+            return "Updated successfully";
         }
         return null;
     }

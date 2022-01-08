@@ -1,6 +1,7 @@
 package de.hrw.verteiltesystemepraktikum.question;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,6 +19,7 @@ import javax.validation.constraints.NotEmpty;
 )
 @NoArgsConstructor
 @Getter
+@AllArgsConstructor
 @Setter
 public class Question {
 
@@ -37,11 +39,12 @@ public class Question {
     @NotEmpty
     private String content;
 
-    @JsonIgnore
-    private boolean read;
-
-    @JsonIgnore
-    private boolean answered;
+    public Question(String author, String email, String subject, String content) {
+        this.author = author;
+        this.email = email;
+        this.subject = subject;
+        this.content = content;
+    }
 
     @Override
     public boolean equals(Object o) {
