@@ -5,18 +5,18 @@ import java.util.Optional;
 
 public interface OrderService {
 
-    Order saveOrder(Order order);
+    String saveOrder(Order order);
 
-    void deleteOrderById(Long id) throws OrderNotFoundException;
+    String deleteOrderById(Long id) throws OrderNotFoundException;
 
-    Long deleteAllOrders();
+    String deleteAllOrders();
 
-    Order updateOrderById(Order order, Long id) throws OrderNotFoundException;
+    String updateOrderById(Order order, Long id) throws OrderNotFoundException;
 
     List<Order> getAllOrders();
 
     Optional<Order> findOrderById(Long id);
 
-    List<Order> updateAllOrders(Order updatedOrders);
+    String updateAllOrders(Order updatedOrders);
 
 }

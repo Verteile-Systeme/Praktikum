@@ -16,34 +16,34 @@ public class OrderServiceImpl implements OrderService {
     public OrderServiceImpl(OrderRepository orderRepository) { this.orderRepository = orderRepository; }
 
     @Override
-    public Order saveOrder(Order order) {
-        order.setDate(new Date());
-        return orderRepository.save(order);
+    public String saveOrder(Order order) {
+        orderRepository.save(order);
+        return "Created successfully";
     }
 
     @Override
-    public void deleteOrderById(Long id) throws OrderNotFoundException {
+    public String deleteOrderById(Long id) throws OrderNotFoundException {
         if (!orderRepository.existsById(id)) {
             String errorString = "The specified id <" + id + "> does not exist.";
             throw new OrderNotFoundException(errorString);
         }
         orderRepository.deleteById(id);
+        return "Deleted successfully";
     }
 
     @Override
-    public Long deleteAllOrders() {
-        Long entities = orderRepository.count();
+    public String deleteAllOrders() {
         orderRepository.deleteAll();
-        return entities;
+        return "Deleted successfully";
     }
 
     @Override
-    public Order updateOrderById(Order updatedOrder, Long id) throws OrderNotFoundException {
+    public String updateOrderById(Order updatedOrder, Long id) throws OrderNotFoundException {
         if (!orderRepository.existsById(id)) {
             String errorString = "The specified id <" + id + "> does not exist.";
             throw new OrderNotFoundException(errorString);
         }
-        return orderRepository.findById(id)
+        orderRepository.findById(id)
                 .map(order -> {
                     order.setProducts(updatedOrder.getProducts());
                     order.setQuantity(updatedOrder.getQuantity());
@@ -51,18 +51,18 @@ public class OrderServiceImpl implements OrderService {
                     order.setDate(updatedOrder.getDate());
                     return orderRepository.save(order);
                 }).orElseGet(() -> orderRepository.save(updatedOrder));
+        return "Updated successfully";
     }
 
     @Override
-    public List<Order> updateAllOrders(Order updatedOrder) {
-        List<Order> updatedOrders = new ArrayList<>();
+    public String updateAllOrders(Order updatedOrder) {
         List<Order> allOrders = this.getAllOrders();
 
         if (!allOrders.isEmpty()) {
             for (Order temp : allOrders) {
-                updatedOrders.add(updateOrderById(updatedOrder, temp.getId()));
+                updateOrderById(updatedOrder, temp.getId());
             }
-            return updatedOrders;
+            return "Updated successfully";
         }
         return null;
     }
