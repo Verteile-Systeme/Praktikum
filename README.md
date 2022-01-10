@@ -65,7 +65,7 @@ Um alle Tests automatisch auszuführen, geben Sie bitte den folgenden Befehl ein
 ./mvnw test -Djacoco.skip=true
 ```
 
-# Dokumentation
+# [Dokumentation](./docs)
 
 Die Dokumentation finden Sie unter [Implementierungskonzept](./docs/Implementierungskonzept.md). 
 
@@ -73,4 +73,6 @@ Die Dokumentation finden Sie unter [Implementierungskonzept](./docs/Implementier
 
 Die API-Dokumentation mittels Swagger wird unter folgendem Pfad bereit gestellt:
 http://localhost:8080/swagger-ui/
+
+Oder als JSON in [Swagger](./docs/swagger.json)
 
